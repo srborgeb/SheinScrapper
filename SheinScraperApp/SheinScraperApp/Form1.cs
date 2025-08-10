@@ -11,13 +11,13 @@ using OpenQA.Selenium.Chrome; // Para Chrome
 using OpenQA.Selenium.Support.UI; // Para WebDriverWait
 using WebDriverManager; // Añadido para la gestión automática del driver
 using WebDriverManager.DriverConfigs.Impl; // Añadido para la configuración de Chrome
-using System.Globalization; // Para el formato numérico
+using System.Globalization;
+using AngleSharp.Text; // Para el formato numérico
 
 namespace SheinScraperApp
 {
     public partial class formScrap : Form
     {
-        // Variables renombradas a español
         private string _carpetaSeleccionada = "";
         private string _productoNombre = "";
         private string _productoPrecio = "";
@@ -25,28 +25,22 @@ namespace SheinScraperApp
         private string _productoSku = "";
         private string _productoImagenUrl = "";
 
-        // Ruta del perfil temporal para Chrome, gestionado por la aplicación
+        // Ruta del perfil temporal para Chrome
         private string _chromeUserProfilePath;
 
         public formScrap()
         {
             InitializeComponent();
-            // ¡IMPORTANTE! Con EPPlus 4.x, NO necesitas configurar ExcelPackage.LicenseContext aquí.
-            // Asegúrate de que EPPlus versión 4.5.3.3 está instalada y elimina cualquier línea que intente configurar ExcelPackage.LicenseContext.
-
-            // Definir la ruta del perfil de usuario para Chrome
-            // Esto asegura que las cookies y sesiones persistan entre ejecuciones
-            // y que sea un perfil que la aplicación puede controlar sin conflictos con tu Chrome principal.
             _chromeUserProfilePath = Path.Combine(Path.GetTempPath(), "SheinScraperChromeProfile");
-            Directory.CreateDirectory(_chromeUserProfilePath); // Asegura que la carpeta exista.
+            Directory.CreateDirectory(_chromeUserProfilePath); // Asegura que la carpeta de chrome exista.
 
-            // Asignar el evento para seleccionar todo el texto al hacer clic en la caja de URL
             txtUrlProducto.Enter += TxtUrlProducto_Enter; // Modificación para seleccionar todo el texto al entrar
+            txtUrlProducto.Text = ""; // Inicializar el campo de texto vacío
         }
 
         private void TxtUrlProducto_Enter(object sender, EventArgs e)
         {
-            // Selecciona todo el texto en la caja de texto cuando obtiene el foco
+            // Selecciona todo el texto en la caja de texto cuando obtiene el foco - No funciona
             txtUrlProducto.SelectAll();
         }
 
@@ -73,7 +67,7 @@ namespace SheinScraperApp
                 return;
             }
 
-            // *** NUEVA VALIDACIÓN: Verificar que se haya seleccionado una carpeta válida ***
+            // Validar que se seleccionó una carpeta válida
             if (string.IsNullOrEmpty(_carpetaSeleccionada) || !Directory.Exists(_carpetaSeleccionada))
             {
                 MessageBox.Show("Por favor, selecciona una carpeta válida para guardar las imágenes y el Excel antes de scrapear.", "Carpeta no seleccionada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -84,41 +78,36 @@ namespace SheinScraperApp
             rtbResultado.AppendText("Iniciando scraping con Selenium (lanzando Chrome automatizado)... Por favor, espera.\n");
             btnScrape.Enabled = false;
 
-            IWebDriver driver = null; // Declarar aquí para que sea accesible en finally
+            IWebDriver driver = null;
             try
             {
-                // *** Paso 1: Asegurar que el ChromeDriver esté descargado y listo ***
                 // WebDriverManager descargará el chromedriver.exe a una ubicación conocida por Selenium.
                 new DriverManager().SetUpDriver(new ChromeConfig());
 
                 var service = ChromeDriverService.CreateDefaultService();
-                service.SuppressInitialDiagnosticInformation = true; // Reduce la salida de consola en la consola de depuración
+                service.SuppressInitialDiagnosticInformation = true;
 
                 ChromeOptions options = new ChromeOptions();
 
-                // *** Configuración para usar un perfil de usuario gestionado por la aplicación ***
-                // Esto permite que las cookies, caché y sesiones se mantengan entre ejecuciones
-                // y que no haya conflicto con tu Chrome personal si está abierto.
                 options.AddArgument($"--user-data-dir={_chromeUserProfilePath}");
-                options.AddArgument("--profile-directory=Default"); // Selenium usará o creará un perfil 'Default' dentro de user-data-dir
+                options.AddArgument("--profile-directory=Default"); // selenium usará el perfil por defecto 
 
-                // --- Opciones de "Stealth" para parecer más humano ---
+                //habilitar modo stealth para evitar detección de automatización
                 options.AddArgument("--disable-blink-features=AutomationControlled");
                 options.AddExcludedArgument("enable-automation");
                 options.AddArgument("--disable-infobars");
                 options.AddArgument("--start-maximized"); // Inicia maximizado
                 options.AddArgument("--no-sandbox"); // Necesario para algunos entornos de ejecución
-                options.AddArgument("--disable-dev-shm-usage"); // Para Linux/Docker, útil en algunos Windows
-                options.AddArgument("--disable-gpu"); // Deshabilita la aceleración por hardware, útil para estabilidad
-                // options.AddArgument("--headless"); // Mantenlo comentado para ver el navegador y resolver CAPTCHAs
+                options.AddArgument("--disable-dev-shm-usage"); 
+                options.AddArgument("--disable-gpu"); // Deshabilita la aceleración por hardware.
 
-                // --- Configuración de idioma ---
+                //solicitur idioma español
                 options.AddArgument("--lang=es");
 
-                // *** Lanzar el navegador Chrome ***
+                //abrir chrome
                 driver = new ChromeDriver(service, options);
                 driver.Manage().Window.Maximize(); // Asegura que la ventana esté maximizada después de abrir
-                System.Threading.Thread.Sleep(2000); // Pequeña pausa para que el navegador se asiente
+                System.Threading.Thread.Sleep(2000); // Pequeña pausa para que el navegador abra completamente
 
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(90);
@@ -129,9 +118,9 @@ namespace SheinScraperApp
                     driver.Navigate().GoToUrl(productUrl);
                     rtbResultado.AppendText("Navegación solicitada.\n");
 
-                    // Espera a que la URL actual contenga "shein.com" para confirmar la navegación
+                    // Espera a que la URL actual contenga "us.shein.com" para confirmar la navegación
                     WebDriverWait urlWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-                    urlWait.Until(d => d.Url.Contains("shein.com", StringComparison.OrdinalIgnoreCase));
+                    urlWait.Until(d => d.Url.Contains("us.shein.com", StringComparison.OrdinalIgnoreCase));
                     rtbResultado.AppendText($"Actualmente en URL: {driver.Url}\n"); // Muestra la URL real
                 }
                 catch (Exception navEx)
@@ -140,7 +129,7 @@ namespace SheinScraperApp
                     throw new Exception("Error de navegación inicial. La URL podría estar bloqueada o no accesible.");
                 }
 
-                // --- Manejo de Pop-ups (ej. Cookies o banners iniciales) ---
+                //Menaje de pop-ups de cookies
                 try
                 {
                     WebDriverWait shortWait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
@@ -167,7 +156,7 @@ namespace SheinScraperApp
                     rtbResultado.AppendText($"Error al intentar cerrar pop-up: {ex.Message}\n");
                 }
 
-                // --- Espera robusta para el nombre del producto ---
+                //Espera extendida para que el contenido del producto cargue completamente
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(300)); // 5 minutos de espera para CAPTCHA/carga completa
 
                 rtbResultado.AppendText("Esperando que el contenido del producto cargue (buscando el nombre del producto)...\n");
@@ -184,10 +173,10 @@ namespace SheinScraperApp
                     rtbResultado.AppendText("Esto podría deberse a un CAPTCHA, un bloqueo o una carga extremadamente lenta.\n");
                     rtbResultado.AppendText("Por favor, revisa la ventana del navegador que se abrió y resuelve cualquier CAPTCHA o interacción manual necesaria.\n");
 
-                    // *** Mensaje para el usuario: Resolver CAPTCHA / Iniciar sesión ***
+                    //Mensaje de espera para resolver CAPTCHA
                     MessageBox.Show("Se ha detectado un posible CAPTCHA o bloqueo.\n\nPor favor, resuelve la verificación en la ventana del navegador que se abrió (puedes iniciar sesión si es necesario).\n\nLa aplicación continuará automáticamente una vez que el contenido sea accesible. Si ya lo has resuelto, haz clic en Aceptar aquí.", "Resolver CAPTCHA Manualmente", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    // Después de que el usuario haga clic en Aceptar, intentamos de nuevo obtener el elemento
+                    // Después de hacer clic en Aceptar en captcha, intentamos de nuevo obtener los datos de la pagina
                     try
                     {
                         nameElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(".product-intro__head-name")));
@@ -204,17 +193,14 @@ namespace SheinScraperApp
                     throw new Exception("El elemento del nombre del producto no fue encontrado después de la carga de la página. El selector CSS podría ser incorrecto.");
                 }
 
-                // --- Extracción de Datos ---
-                // Selectores actualizados según el HTML proporcionado
-                // Manejo de posibles elementos nulos (si un elemento no se encuentra)
+                // Manejo de posibles elementos nulos
                 IWebElement priceElement = null;
                 try
                 {
-                    // Selector para el precio de venta (si hay descuento, será el precio con descuento)
+                    //si hay descuento, será el precio con descuento
                     priceElement = driver.FindElement(By.CssSelector("p.productDiscountInfo__retail")); // Selector revisado para el HTML proporcionado
                     string rawPrice = priceElement.Text.Replace("$", "").Trim(); // Eliminar el signo de dólar
 
-                    // *** NUEVA LÓGICA: Convertir a numérico y formatear sin símbolo de moneda ***
                     if (decimal.TryParse(rawPrice, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal priceValue))
                     {
                         _productoPrecio = priceValue.ToString(CultureInfo.InvariantCulture); // Formato numérico con punto decimal
@@ -228,11 +214,11 @@ namespace SheinScraperApp
                 {
                     try
                     {
-                        // Fallback para el precio principal si no hay descuento
+                        //Precio principal sin descuento
                         priceElement = driver.FindElement(By.CssSelector(".productPrice__main span:nth-of-type(2)"));
                         string rawPrice = priceElement.Text.Replace("$", "").Trim(); // Eliminar el signo de dólar
 
-                        // *** NUEVA LÓGICA: Convertir a numérico y formatear sin símbolo de moneda ***
+                        //Convertir a numérico
                         if (decimal.TryParse(rawPrice, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal priceValue))
                         {
                             _productoPrecio = priceValue.ToString(CultureInfo.InvariantCulture); // Formato numérico con punto decimal
@@ -251,7 +237,7 @@ namespace SheinScraperApp
                 IWebElement discountElement = null;
                 try
                 {
-                    // Selector para el porcentaje de descuento (revisado para el HTML proporcionado)
+                    // Selector para el porcentaje de descuento
                     discountElement = driver.FindElement(By.CssSelector(".productDiscountPercent"));
                     _productoDescuento = discountElement.Text;
                 }
@@ -283,7 +269,7 @@ namespace SheinScraperApp
 
                     if (_productoSku == "")
                     {
-                        // Fallback: extraer SKU de la URL si no se encuentra en el HTML
+                        //Extraer SKU de la URL si no se encuentra en el HTML
                         var match = System.Text.RegularExpressions.Regex.Match(productUrl, @"/p-(\d+)(?:-\d+)?\.html");
                         if (match.Success)
                         {
@@ -299,11 +285,11 @@ namespace SheinScraperApp
                 IWebElement imageElement = null;
                 try
                 {
-                    // Selector para la imagen principal (revisado para el HTML proporcionado)
+                    // Selector para la imagen principal
                     imageElement = driver.FindElement(By.CssSelector("div.normal-picture.one-picture__normal img.crop-image-container__img"));
                     string imageUrlAttribute = imageElement.GetAttribute("src");
 
-                    // Shein a veces usa src="//..." o data-src="//..." para lazy loading. Normalizar a https:
+                    // Shein a veces usa src="//..." o data-src="//..." para lazy loading.
                     if (imageUrlAttribute.StartsWith("//"))
                     {
                         _productoImagenUrl = "https:" + imageUrlAttribute;
@@ -363,8 +349,10 @@ namespace SheinScraperApp
                 btnScrape.Enabled = true;
                 if (driver != null)
                 {
-                    driver.Quit(); // Cierra el navegador de Selenium
+                    driver.Quit(); // Cierra el navegador
                 }
+                txtUrlProducto.Text = ""; // Inicializar el campo de texto vacío
+               
             }
         }
 
@@ -446,7 +434,7 @@ namespace SheinScraperApp
 
                     worksheet.Cells[newRow, 1, newRow, 6].AutoFitColumns();
 
-                    package.Save();
+                    package.Save(); 
                 }
                 MessageBox.Show($"Datos guardados exitosamente en: {excelFilePath}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

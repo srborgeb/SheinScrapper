@@ -35,15 +35,12 @@
             btnSeleccionarDirectorio = new Button();
             lblDirectorio = new Label();
             btnGuardarExcel = new Button();
-            txtPerfilFirefox = new TextBox();
-            label2 = new Label();
-            label3 = new Label();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(31, 179);
+            label1.Location = new Point(31, 116);
             label1.Name = "label1";
             label1.Size = new Size(185, 15);
             label1.TabIndex = 0;
@@ -51,14 +48,14 @@
             // 
             // txtUrlProducto
             // 
-            txtUrlProducto.Location = new Point(222, 176);
+            txtUrlProducto.Location = new Point(222, 113);
             txtUrlProducto.Name = "txtUrlProducto";
             txtUrlProducto.Size = new Size(560, 23);
             txtUrlProducto.TabIndex = 1;
             // 
             // btnScrape
             // 
-            btnScrape.Location = new Point(31, 218);
+            btnScrape.Location = new Point(31, 160);
             btnScrape.Name = "btnScrape";
             btnScrape.Size = new Size(151, 50);
             btnScrape.TabIndex = 2;
@@ -68,7 +65,7 @@
             // 
             // rtbResultado
             // 
-            rtbResultado.Location = new Point(222, 218);
+            rtbResultado.Location = new Point(222, 160);
             rtbResultado.Name = "rtbResultado";
             rtbResultado.ReadOnly = true;
             rtbResultado.Size = new Size(560, 185);
@@ -77,7 +74,7 @@
             // 
             // btnSeleccionarDirectorio
             // 
-            btnSeleccionarDirectorio.Location = new Point(31, 424);
+            btnSeleccionarDirectorio.Location = new Point(31, 12);
             btnSeleccionarDirectorio.Name = "btnSeleccionarDirectorio";
             btnSeleccionarDirectorio.Size = new Size(151, 72);
             btnSeleccionarDirectorio.TabIndex = 4;
@@ -88,7 +85,7 @@
             // lblDirectorio
             // 
             lblDirectorio.AutoSize = true;
-            lblDirectorio.Location = new Point(222, 453);
+            lblDirectorio.Location = new Point(222, 41);
             lblDirectorio.Name = "lblDirectorio";
             lblDirectorio.Size = new Size(179, 15);
             lblDirectorio.TabIndex = 5;
@@ -96,48 +93,19 @@
             // 
             // btnGuardarExcel
             // 
-            btnGuardarExcel.Location = new Point(638, 424);
+            btnGuardarExcel.Location = new Point(31, 356);
             btnGuardarExcel.Name = "btnGuardarExcel";
-            btnGuardarExcel.Size = new Size(144, 72);
+            btnGuardarExcel.Size = new Size(151, 72);
             btnGuardarExcel.TabIndex = 6;
             btnGuardarExcel.Text = "Guardar en Excel";
             btnGuardarExcel.UseVisualStyleBackColor = true;
             btnGuardarExcel.Click += btnGuardarExcel_Click;
             // 
-            // txtPerfilFirefox
-            // 
-            txtPerfilFirefox.Location = new Point(586, 56);
-            txtPerfilFirefox.Name = "txtPerfilFirefox";
-            txtPerfilFirefox.Size = new Size(196, 23);
-            txtPerfilFirefox.TabIndex = 7;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            label2.Location = new Point(31, 19);
-            label2.Name = "label2";
-            label2.Size = new Size(407, 76);
-            label2.TabIndex = 8;
-            label2.Text = "1 - Inicia Firefox\r\n2 - Colocar en la barra de navegacion about:profiles\r\n3 - Tomar el nombre del perfil de Firefox para ser cargado.\r\n4 - Iniciar WebScraper";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(496, 59);
-            label3.Name = "label3";
-            label3.Size = new Size(73, 15);
-            label3.TabIndex = 9;
-            label3.Text = "Perfil Firefox";
-            // 
             // formScrap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(803, 516);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(txtPerfilFirefox);
+            ClientSize = new Size(803, 443);
             Controls.Add(btnGuardarExcel);
             Controls.Add(lblDirectorio);
             Controls.Add(btnSeleccionarDirectorio);
@@ -161,8 +129,5 @@
         private Button btnSeleccionarDirectorio;
         private Label lblDirectorio;
         private Button btnGuardarExcel;
-        private TextBox txtPerfilFirefox;
-        private Label label2;
-        private Label label3;
     }
 }

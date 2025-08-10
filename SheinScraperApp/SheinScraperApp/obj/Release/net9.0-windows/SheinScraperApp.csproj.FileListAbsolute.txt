@@ -35,3 +35,4 @@ D:\Desarrollo\Codigos\C#\SheinScrapper\SheinScraperApp\SheinScraperApp\obj\Relea
 D:\Desarrollo\Codigos\C#\SheinScrapper\SheinScraperApp\SheinScraperApp\obj\Release\net9.0-windows\SheinScraperApp.pdb
 D:\Desarrollo\Codigos\C#\SheinScrapper\SheinScraperApp\SheinScraperApp\obj\Release\net9.0-windows\SheinScraperApp.genruntimeconfig.cache
 D:\Desarrollo\Codigos\C#\SheinScrapper\SheinScraperApp\SheinScraperApp\obj\Release\net9.0-windows\ref\SheinScraperApp.dll
+D:\Desarrollo\Codigos\C#\SheinScrapper\SheinScraperApp\SheinScraperApp\obj\Release\net9.0-windows\SheinScraperApp.sourcelink.json
