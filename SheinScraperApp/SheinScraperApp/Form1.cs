@@ -11,8 +11,9 @@ using OpenQA.Selenium.Chrome; // Para Chrome
 using OpenQA.Selenium.Support.UI; // Para WebDriverWait
 using WebDriverManager; // Añadido para la gestión automática del driver
 using WebDriverManager.DriverConfigs.Impl; // Añadido para la configuración de Chrome
-using System.Globalization;
 using AngleSharp.Text; // Para el formato numérico
+using System.Globalization; // Para la cultura y formato numérico
+using System.Threading;
 
 namespace SheinScraperApp
 {
@@ -38,11 +39,44 @@ namespace SheinScraperApp
             txtUrlProducto.Text = ""; // Inicializar el campo de texto vacío
         }
 
+        string _SeparadorDecimal = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
         private void TxtUrlProducto_Enter(object sender, EventArgs e)
         {
             // Selecciona todo el texto en la caja de texto cuando obtiene el foco - No funciona
             txtUrlProducto.SelectAll();
         }
+
+        private void Valor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Solo recibe numeros y el separador decimal como entrada
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != _SeparadorDecimal[0])
+            {
+                e.Handled = true;
+            }
+
+            //Si ya existe un un separador separador igonora la siguiente pulsacion de este
+            if (e.KeyChar == _SeparadorDecimal[0] && (sender as TextBox).Text.IndexOf(_SeparadorDecimal) > -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Nombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir solo letras, numeros y espacios
+            if (!char.IsControl(e.KeyChar) && !char.IsLetterOrDigit(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+            if(string.IsNullOrEmpty((sender as TextBox).Text))
+            {
+                MessageBox.Show("El campo de nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+        }
+
 
         private void btnSeleccionarDirectorio_Click(object sender, EventArgs e)
         {
@@ -74,6 +108,7 @@ namespace SheinScraperApp
                 return;
             }
 
+
             rtbResultado.Clear();
             rtbResultado.AppendText("Iniciando scraping con Selenium (lanzando Chrome automatizado)... Por favor, espera.\n");
             btnScrape.Enabled = false;
@@ -98,7 +133,7 @@ namespace SheinScraperApp
                 options.AddArgument("--disable-infobars");
                 options.AddArgument("--start-maximized"); // Inicia maximizado
                 options.AddArgument("--no-sandbox"); // Necesario para algunos entornos de ejecución
-                options.AddArgument("--disable-dev-shm-usage"); 
+                options.AddArgument("--disable-dev-shm-usage");
                 options.AddArgument("--disable-gpu"); // Deshabilita la aceleración por hardware.
 
                 //solicitur idioma español
@@ -352,7 +387,7 @@ namespace SheinScraperApp
                     driver.Quit(); // Cierra el navegador
                 }
                 txtUrlProducto.Text = ""; // Inicializar el campo de texto vacío
-               
+
             }
         }
 
@@ -394,6 +429,15 @@ namespace SheinScraperApp
                 return;
             }
 
+
+            if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text))
+            {
+                MessageBox.Show("Por favor, completa ambos campos antes de continuar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                return;
+            }
+            ;
+
             string excelFileName = "ProductosShein.xlsx";
             string excelFilePath = Path.Combine(_carpetaSeleccionada, excelFileName);
 
@@ -413,17 +457,23 @@ namespace SheinScraperApp
                     {
                         worksheet = package.Workbook.Worksheets.Add("Datos Productos");
                         worksheet.Cells[1, 1].Value = "SKU";
-                        worksheet.Cells[1, 2].Value = "Nombre";
+                        worksheet.Cells[1, 2].Value = "Nombre Articulo";
                         worksheet.Cells[1, 3].Value = "Precio";
                         worksheet.Cells[1, 4].Value = "Descuento";
                         worksheet.Cells[1, 5].Value = "URL Imagen";
                         worksheet.Cells[1, 6].Value = "Ruta Imagen Local";
+                        worksheet.Cells[1, 7].Value = "Valor";
+                        worksheet.Cells[1, 8].Value = "Nombre";
 
-                        worksheet.Cells[1, 1, 1, 6].AutoFitColumns();
+                        worksheet.Cells[1, 1, 1, 8].AutoFitColumns();
                     }
 
                     int rowCount = worksheet.Dimension?.Rows ?? 0;
                     int newRow = rowCount + 1;
+
+                    decimal _Valor = 0;
+                    decimal.TryParse(textBox1.Text, out _Valor);
+                    string _Nombre = textBox2.Text;
 
                     worksheet.Cells[newRow, 1].Value = _productoSku;
                     worksheet.Cells[newRow, 2].Value = _productoNombre;
@@ -431,11 +481,15 @@ namespace SheinScraperApp
                     worksheet.Cells[newRow, 4].Value = _productoDescuento;
                     worksheet.Cells[newRow, 5].Value = _productoImagenUrl;
                     worksheet.Cells[newRow, 6].Value = Path.Combine(_carpetaSeleccionada, $"{_productoSku}.jpg");
+                    worksheet.Cells[newRow, 7].Value = _Valor;
+                    worksheet.Cells[newRow, 8].Value = _Nombre;
 
-                    worksheet.Cells[newRow, 1, newRow, 6].AutoFitColumns();
+                    worksheet.Cells[newRow, 1, newRow, 8].AutoFitColumns();
 
-                    package.Save(); 
+                    package.Save();
                 }
+                textBox1.Clear();
+                textBox2.Clear();
                 MessageBox.Show($"Datos guardados exitosamente en: {excelFilePath}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

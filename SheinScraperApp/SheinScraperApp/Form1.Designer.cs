@@ -1,4 +1,5 @@
-﻿namespace SheinScraperApp
+﻿
+namespace SheinScraperApp
 {
     partial class formScrap
     {
@@ -35,6 +36,10 @@
             btnSeleccionarDirectorio = new Button();
             lblDirectorio = new Label();
             btnGuardarExcel = new Button();
+            textBox1 = new TextBox();
+            textBox2 = new TextBox();
+            label2 = new Label();
+            label3 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -50,12 +55,12 @@
             // 
             txtUrlProducto.Location = new Point(222, 113);
             txtUrlProducto.Name = "txtUrlProducto";
-            txtUrlProducto.Size = new Size(560, 23);
+            txtUrlProducto.Size = new Size(526, 23);
             txtUrlProducto.TabIndex = 1;
             // 
             // btnScrape
             // 
-            btnScrape.Location = new Point(31, 160);
+            btnScrape.Location = new Point(31, 207);
             btnScrape.Name = "btnScrape";
             btnScrape.Size = new Size(151, 50);
             btnScrape.TabIndex = 2;
@@ -65,7 +70,7 @@
             // 
             // rtbResultado
             // 
-            rtbResultado.Location = new Point(222, 160);
+            rtbResultado.Location = new Point(188, 207);
             rtbResultado.Name = "rtbResultado";
             rtbResultado.ReadOnly = true;
             rtbResultado.Size = new Size(560, 185);
@@ -93,7 +98,7 @@
             // 
             // btnGuardarExcel
             // 
-            btnGuardarExcel.Location = new Point(31, 356);
+            btnGuardarExcel.Location = new Point(31, 320);
             btnGuardarExcel.Name = "btnGuardarExcel";
             btnGuardarExcel.Size = new Size(151, 72);
             btnGuardarExcel.TabIndex = 6;
@@ -101,11 +106,50 @@
             btnGuardarExcel.UseVisualStyleBackColor = true;
             btnGuardarExcel.Click += btnGuardarExcel_Click;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(268, 160);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(151, 23);
+            textBox1.TabIndex = 7;
+            textBox1.KeyPress += Valor_KeyPress;
+            // 
+            // textBox2
+            // 
+            textBox2.ForeColor = SystemColors.ControlText;
+            textBox2.Location = new Point(569, 160);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(151, 23);
+            textBox2.TabIndex = 8;
+            textBox2.KeyPress += Nombre_KeyPress;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(226, 163);
+            label2.Name = "label2";
+            label2.Size = new Size(36, 15);
+            label2.TabIndex = 9;
+            label2.Text = "Valor:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(509, 163);
+            label3.Name = "label3";
+            label3.Size = new Size(54, 15);
+            label3.TabIndex = 10;
+            label3.Text = "Nombre:";
+            // 
             // formScrap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(803, 443);
+            ClientSize = new Size(761, 410);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(textBox2);
+            Controls.Add(textBox1);
             Controls.Add(btnGuardarExcel);
             Controls.Add(lblDirectorio);
             Controls.Add(btnSeleccionarDirectorio);
@@ -120,6 +164,11 @@
             PerformLayout();
         }
 
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         private Label label1;
@@ -129,5 +178,9 @@
         private Button btnSeleccionarDirectorio;
         private Label lblDirectorio;
         private Button btnGuardarExcel;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private Label label2;
+        private Label label3;
     }
 }
