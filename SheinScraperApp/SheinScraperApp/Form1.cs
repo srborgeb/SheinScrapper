@@ -70,11 +70,11 @@ namespace SheinScraperApp
                 e.Handled = true;
             }
 
-            if(string.IsNullOrEmpty((sender as TextBox).Text))
-            {
-                MessageBox.Show("El campo de nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            //if (string.IsNullOrEmpty((sender as TextBox).Text))
+            //{
+            //    MessageBox.Show("El campo de nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
         }
 
 
@@ -488,8 +488,6 @@ namespace SheinScraperApp
 
                     package.Save();
                 }
-                textBox1.Clear();
-                textBox2.Clear();
                 MessageBox.Show($"Datos guardados exitosamente en: {excelFilePath}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -497,6 +495,11 @@ namespace SheinScraperApp
                 MessageBox.Show($"Error al guardar en Excel: {ex.Message}\n" +
                                 "Asegúrate de que el archivo no esté abierto y tengas permisos de escritura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

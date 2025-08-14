@@ -112,6 +112,7 @@ namespace SheinScraperApp
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(151, 23);
             textBox1.TabIndex = 7;
+            textBox1.TextChanged += textBox1_TextChanged;
             textBox1.KeyPress += Valor_KeyPress;
             // 
             // textBox2

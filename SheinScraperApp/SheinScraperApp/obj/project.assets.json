@@ -4848,23 +4848,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sidney\\.nuget\\packages\\": {},
+    "C:\\Users\\srbor\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+      "projectUniqueName": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
       "projectName": "SheinScraperApp",
-      "projectPath": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
-      "packagesPath": "C:\\Users\\Sidney\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\obj\\",
+      "projectPath": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+      "packagesPath": "C:\\Users\\srbor\\.nuget\\packages\\",
+      "outputPath": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Sidney\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\srbor\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4873,6 +4873,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4937,7 +4938,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
