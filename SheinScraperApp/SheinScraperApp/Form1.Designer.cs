@@ -138,9 +138,9 @@ namespace SheinScraperApp
             label3.AutoSize = true;
             label3.Location = new Point(509, 163);
             label3.Name = "label3";
-            label3.Size = new Size(54, 15);
+            label3.Size = new Size(47, 15);
             label3.TabIndex = 10;
-            label3.Text = "Nombre:";
+            label3.Text = "Cliente:";
             // 
             // formScrap
             // 

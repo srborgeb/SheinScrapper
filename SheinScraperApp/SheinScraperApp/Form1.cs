@@ -476,7 +476,7 @@ namespace SheinScraperApp
                     double.TryParse(textBox1.Text, out _Envio);
                     string _Cliente = textBox2.Text;
                     double.TryParse(_productoPrecio, NumberStyles.Any, CultureInfo.InvariantCulture, out double _productoPrecioDouble);
-                    double _PrecioTotal = (_productoPrecioDouble * 1.7) + _Envio;
+                    double _PrecioTotal = (_productoPrecioDouble * 1.07) + _Envio;
 
                     worksheet.Cells[newRow, 1].Value = _productoSku;
                     worksheet.Cells[newRow, 2].Value = _productoNombre;
