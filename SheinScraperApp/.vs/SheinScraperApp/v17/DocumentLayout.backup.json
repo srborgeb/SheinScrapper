@@ -43,8 +43,7 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-13T15:40:56.463Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -72,20 +71,19 @@
               "RelativeToolTip": "SheinScraperApp\\Form1.Designer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T12:18:56.659Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-10T12:18:56.659Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Form1.cs [Dise\u00F1o]",
+              "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs",
               "RelativeDocumentMoniker": "SheinScraperApp\\Form1.cs",
-              "ToolTip": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs [Dise\u00F1o]",
-              "RelativeToolTip": "SheinScraperApp\\Form1.cs [Dise\u00F1o]",
+              "ToolTip": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs [Design]",
+              "RelativeToolTip": "SheinScraperApp\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-24T14:41:51.463Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -95,7 +93,7 @@
               "RelativeDocumentMoniker": "SheinScraperApp\\Form1.cs",
               "ToolTip": "C:\\Users\\Sidney\\Desktop\\Scrapper\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs",
               "RelativeToolTip": "SheinScraperApp\\Form1.cs",
-              "ViewState": "AgIAAKsBAAAAAAAAAAAAAPQBAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAMcBAAAAAAAAAAAuwNUBAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-24T13:39:57.132Z",
               "EditorCaption": ""

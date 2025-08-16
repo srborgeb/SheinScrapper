@@ -460,31 +460,35 @@ namespace SheinScraperApp
                         worksheet.Cells[1, 2].Value = "Nombre Articulo";
                         worksheet.Cells[1, 3].Value = "Precio";
                         worksheet.Cells[1, 4].Value = "Descuento";
-                        worksheet.Cells[1, 5].Value = "URL Imagen";
-                        worksheet.Cells[1, 6].Value = "Ruta Imagen Local";
-                        worksheet.Cells[1, 7].Value = "Valor";
-                        worksheet.Cells[1, 8].Value = "Nombre";
+                        worksheet.Cells[1, 5].Value = "Envio";
+                        worksheet.Cells[1, 6].Value = "Cliente";
+                        worksheet.Cells[1, 7].Value = "Precio Total"; 
+                        worksheet.Cells[1, 8].Value = "URL Imagen";
+                        worksheet.Cells[1, 9].Value = "Ruta Imagen Local";
 
-                        worksheet.Cells[1, 1, 1, 8].AutoFitColumns();
+                        worksheet.Cells[1, 1, 1, 9].AutoFitColumns();
                     }
 
                     int rowCount = worksheet.Dimension?.Rows ?? 0;
                     int newRow = rowCount + 1;
 
-                    decimal _Valor = 0;
-                    decimal.TryParse(textBox1.Text, out _Valor);
-                    string _Nombre = textBox2.Text;
+                    double _Envio = 0;
+                    double.TryParse(textBox1.Text, out _Envio);
+                    string _Cliente = textBox2.Text;
+                    double.TryParse(_productoPrecio, NumberStyles.Any, CultureInfo.InvariantCulture, out double _productoPrecioDouble);
+                    double _PrecioTotal = (_productoPrecioDouble * 1.7) + _Envio;
 
                     worksheet.Cells[newRow, 1].Value = _productoSku;
                     worksheet.Cells[newRow, 2].Value = _productoNombre;
                     worksheet.Cells[newRow, 3].Value = _productoPrecio;
                     worksheet.Cells[newRow, 4].Value = _productoDescuento;
-                    worksheet.Cells[newRow, 5].Value = _productoImagenUrl;
-                    worksheet.Cells[newRow, 6].Value = Path.Combine(_carpetaSeleccionada, $"{_productoSku}.jpg");
-                    worksheet.Cells[newRow, 7].Value = _Valor;
-                    worksheet.Cells[newRow, 8].Value = _Nombre;
+                    worksheet.Cells[newRow, 5].Value = _Envio;
+                    worksheet.Cells[newRow, 6].Value = _Cliente;
+                    worksheet.Cells[newRow, 7].Value = _PrecioTotal;
+                    worksheet.Cells[newRow, 8].Value = _productoImagenUrl;
+                    worksheet.Cells[newRow, 9].Value = Path.Combine(_carpetaSeleccionada, $"{_productoSku}.jpg");
 
-                    worksheet.Cells[newRow, 1, newRow, 8].AutoFitColumns();
+                    worksheet.Cells[newRow, 1, newRow, 9].AutoFitColumns();
 
                     package.Save();
                 }
