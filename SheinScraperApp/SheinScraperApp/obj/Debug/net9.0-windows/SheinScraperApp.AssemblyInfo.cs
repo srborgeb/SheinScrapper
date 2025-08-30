@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SheinScraperApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+443abe670046c517ca5b8ad1036c8b11d246a5cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a08155bed02d68a1e5b9e304e9f85f80ff40b779")]
 [assembly: System.Reflection.AssemblyProductAttribute("SheinScraperApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SheinScraperApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
