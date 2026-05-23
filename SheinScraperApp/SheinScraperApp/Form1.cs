@@ -1,19 +1,20 @@
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using AngleSharp.Text; // Para el formato numérico
 using OfficeOpenXml; // Para EPPlus
-using System.Linq; // Para LINQ en Excel
 // Nuevas referencias para Selenium
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome; // Para Chrome
 using OpenQA.Selenium.Support.UI; // Para WebDriverWait
+using System;
+using System.Globalization; // Para la cultura y formato numérico
+using System.IO;
+using System.Linq; // Para LINQ en Excel
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using WebDriverManager; // Añadido para la gestión automática del driver
 using WebDriverManager.DriverConfigs.Impl; // Añadido para la configuración de Chrome
-using AngleSharp.Text; // Para el formato numérico
-using System.Globalization; // Para la cultura y formato numérico
-using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SheinScraperApp
 {
@@ -56,12 +57,12 @@ namespace SheinScraperApp
             }
 
             //Si ya existe un un separador separador igonora la siguiente pulsacion de este
-            if (e.KeyChar == _SeparadorDecimal[0] && (sender as TextBox).Text.IndexOf(_SeparadorDecimal) > -1)
-            {
-                e.Handled = true;
-            }
+            //if (e.KeyChar == _SeparadorDecimal[0] && (sender as TextBox).Text.IndexOf(_SeparadorDecimal) > -1)
+            //{
+            //    e.Handled = true;
+            // }
         }
-
+        
         private void Nombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Permitir solo letras, numeros y espacios
@@ -75,6 +76,11 @@ namespace SheinScraperApp
             //    MessageBox.Show("El campo de nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             //    return;
             //}
+        }
+
+        private void Talla_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
 
 
@@ -229,45 +235,60 @@ namespace SheinScraperApp
                 }
 
                 // Manejo de posibles elementos nulos
-                IWebElement priceElement = null;
-                try
-                {
-                    //si hay descuento, será el precio con descuento
-                    priceElement = driver.FindElement(By.CssSelector("p.productDiscountInfo__retail")); // Selector revisado para el HTML proporcionado
-                    string rawPrice = priceElement.Text.Replace("$", "").Trim(); // Eliminar el signo de dólar
+                // --- INICIA BLOQUE DE BÚSQUEDA DE PRECIO ROBUSTO ---
 
-                    if (decimal.TryParse(rawPrice, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal priceValue))
-                    {
-                        _productoPrecio = priceValue.ToString(CultureInfo.InvariantCulture); // Formato numérico con punto decimal
-                    }
-                    else
-                    {
-                        _productoPrecio = "N/A (Error de formato de precio)";
-                    }
-                }
-                catch (NoSuchElementException)
+                // Lista de selectores CSS para el precio, ordenados por probabilidad.
+                var selectoresDePrecio = new List<string>
+{
+    "span.price-real",                             // Selector más reciente y específico.
+    ".product-intro__head-price .sale-price",      // Otro selector común para precios en oferta.
+    ".product-intro__head-price .original-price",  // Para precios sin oferta.
+    "p.productDiscountInfo__retail",               // Selector antiguo que tenías.
+    "p.productEstimatedTagNewRetail__retail",      // Selector antiguo que tenías.
+    ".productPrice__main span:nth-of-type(2)"      // Selector antiguo que tenías.
+};
+
+                _productoPrecio = "N/A"; // Valor por defecto si no se encuentra el precio.
+
+                // Bucle para probar cada selector hasta encontrar una coincidencia.
+                foreach (var selector in selectoresDePrecio)
                 {
                     try
                     {
-                        //Precio principal sin descuento
-                        priceElement = driver.FindElement(By.CssSelector(".productPrice__main span:nth-of-type(2)"));
-                        string rawPrice = priceElement.Text.Replace("$", "").Trim(); // Eliminar el signo de dólar
+                        IWebElement priceElement = driver.FindElement(By.CssSelector(selector));
 
-                        //Convertir a numérico
-                        if (decimal.TryParse(rawPrice, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal priceValue))
+                        // Si el elemento es visible, procesamos el precio.
+                        if (priceElement.Displayed)
                         {
-                            _productoPrecio = priceValue.ToString(CultureInfo.InvariantCulture); // Formato numérico con punto decimal
-                        }
-                        else
-                        {
-                            _productoPrecio = "N/A (Error de formato de precio)";
+                            string rawPrice = priceElement.Text.Replace("$", "").Trim();
+
+                            if (decimal.TryParse(rawPrice, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal priceValue))
+                            {
+                                _productoPrecio = priceValue.ToString(CultureInfo.InvariantCulture);
+                                rtbResultado.AppendText($"Precio encontrado con el selector: '{selector}'\n");
+                                break; // ¡Éxito! Salimos del bucle.
+                            }
                         }
                     }
                     catch (NoSuchElementException)
                     {
-                        _productoPrecio = "N/A";
+                        // Si el selector no encuentra nada, simplemente continuamos con el siguiente.
+                        continue;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Captura otros posibles errores, como que el elemento no esté visible.
+                        rtbResultado.AppendText($"Error con el selector '{selector}': {ex.Message}\n");
                     }
                 }
+
+                // Comprobación final por si ningún selector funcionó.
+                if (_productoPrecio == "N/A")
+                {
+                    rtbResultado.AppendText("ADVERTENCIA: No se pudo encontrar el precio con ninguno de los selectores probados.\n");
+                }
+
+                // --- TERMINA BLOQUE DE BÚSQUEDA DE PRECIO ---
 
                 IWebElement discountElement = null;
                 try
@@ -430,7 +451,7 @@ namespace SheinScraperApp
             }
 
 
-            if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text))
+            if (string.IsNullOrWhiteSpace(EnvioTextBox.Text) || string.IsNullOrWhiteSpace(ClienteTextBox.Text))
             {
                 MessageBox.Show("Por favor, completa ambos campos antes de continuar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -458,37 +479,47 @@ namespace SheinScraperApp
                         worksheet = package.Workbook.Worksheets.Add("Datos Productos");
                         worksheet.Cells[1, 1].Value = "SKU";
                         worksheet.Cells[1, 2].Value = "Nombre Articulo";
-                        worksheet.Cells[1, 3].Value = "Precio";
-                        worksheet.Cells[1, 4].Value = "Descuento";
-                        worksheet.Cells[1, 5].Value = "Envio";
-                        worksheet.Cells[1, 6].Value = "Cliente";
-                        worksheet.Cells[1, 7].Value = "Precio Total"; 
-                        worksheet.Cells[1, 8].Value = "URL Imagen";
-                        worksheet.Cells[1, 9].Value = "Ruta Imagen Local";
+                        worksheet.Cells[1, 3].Value = "Talla";
+                        worksheet.Cells[1, 4].Value = "Precio";
+                        worksheet.Cells[1, 5].Value = "Descuento";
+                        worksheet.Cells[1, 6].Value = "Envio";
+                        worksheet.Cells[1, 7].Value = "Cliente";
+                        worksheet.Cells[1, 8].Value = "Precio Total";
+                        worksheet.Cells[1, 9].Value = "URL Imagen";
+                        worksheet.Cells[1, 10].Value = "Ruta Imagen Local";
 
-                        worksheet.Cells[1, 1, 1, 9].AutoFitColumns();
+                        worksheet.Cells[1, 1, 1, 10].AutoFitColumns();
                     }
 
                     int rowCount = worksheet.Dimension?.Rows ?? 0;
                     int newRow = rowCount + 1;
 
+
+
                     double _Envio = 0;
-                    double.TryParse(textBox1.Text, out _Envio);
-                    string _Cliente = textBox2.Text;
+                    double.TryParse(EnvioTextBox.Text, out _Envio);
+
+                    string _Cliente = ClienteTextBox.Text;
+
                     double.TryParse(_productoPrecio, NumberStyles.Any, CultureInfo.InvariantCulture, out double _productoPrecioDouble);
-                    double _PrecioTotal = (_productoPrecioDouble * 1.07) + _Envio;
+                    double _PrecioTotal = Math.Round((_productoPrecioDouble * 1.07) + _Envio, 2);
+                    _productoPrecio = _productoPrecioDouble.ToString();
+                    _productoPrecio = _productoPrecio.Replace('.', ',');
+
+                    string _Talla = TallaTextBox.Text;
 
                     worksheet.Cells[newRow, 1].Value = _productoSku;
                     worksheet.Cells[newRow, 2].Value = _productoNombre;
-                    worksheet.Cells[newRow, 3].Value = _productoPrecio;
-                    worksheet.Cells[newRow, 4].Value = _productoDescuento;
-                    worksheet.Cells[newRow, 5].Value = _Envio;
-                    worksheet.Cells[newRow, 6].Value = _Cliente;
-                    worksheet.Cells[newRow, 7].Value = _PrecioTotal;
-                    worksheet.Cells[newRow, 8].Value = _productoImagenUrl;
-                    worksheet.Cells[newRow, 9].Value = Path.Combine(_carpetaSeleccionada, $"{_productoSku}.jpg");
+                    worksheet.Cells[newRow, 3].Value = _Talla;
+                    worksheet.Cells[newRow, 4].Value = _productoPrecioDouble;
+                    worksheet.Cells[newRow, 5].Value = _productoDescuento;
+                    worksheet.Cells[newRow, 6].Value = _Envio;
+                    worksheet.Cells[newRow, 7].Value = _Cliente;
+                    worksheet.Cells[newRow, 8].Value = _PrecioTotal;
+                    worksheet.Cells[newRow, 9].Value = _productoImagenUrl;
+                    worksheet.Cells[newRow, 10].Value = Path.Combine(_carpetaSeleccionada, $"{_productoSku}.jpg");
 
-                    worksheet.Cells[newRow, 1, newRow, 9].AutoFitColumns();
+                    worksheet.Cells[newRow, 1, newRow, 10].AutoFitColumns();
 
                     package.Save();
                 }

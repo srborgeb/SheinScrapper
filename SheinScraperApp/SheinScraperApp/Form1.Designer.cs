@@ -36,10 +36,12 @@ namespace SheinScraperApp
             btnSeleccionarDirectorio = new Button();
             lblDirectorio = new Label();
             btnGuardarExcel = new Button();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            EnvioTextBox = new TextBox();
+            ClienteTextBox = new TextBox();
             label2 = new Label();
             label3 = new Label();
+            TallaTextBox = new TextBox();
+            Talla = new Label();
             SuspendLayout();
             // 
             // label1
@@ -106,51 +108,70 @@ namespace SheinScraperApp
             btnGuardarExcel.UseVisualStyleBackColor = true;
             btnGuardarExcel.Click += btnGuardarExcel_Click;
             // 
-            // textBox1
+            // EnvioTextBox
             // 
-            textBox1.Location = new Point(268, 160);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(151, 23);
-            textBox1.TabIndex = 7;
-            textBox1.TextChanged += textBox1_TextChanged;
-            textBox1.KeyPress += Valor_KeyPress;
+            EnvioTextBox.Location = new Point(597, 160);
+            EnvioTextBox.Name = "EnvioTextBox";
+            EnvioTextBox.Size = new Size(151, 23);
+            EnvioTextBox.TabIndex = 7;
+            EnvioTextBox.TextChanged += textBox1_TextChanged;
+            EnvioTextBox.KeyPress += Valor_KeyPress;
             // 
-            // textBox2
+            // ClienteTextBox
             // 
-            textBox2.ForeColor = SystemColors.ControlText;
-            textBox2.Location = new Point(569, 160);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(151, 23);
-            textBox2.TabIndex = 8;
-            textBox2.KeyPress += Nombre_KeyPress;
+            ClienteTextBox.ForeColor = SystemColors.ControlText;
+            ClienteTextBox.Location = new Point(141, 160);
+            ClienteTextBox.Name = "ClienteTextBox";
+            ClienteTextBox.Size = new Size(128, 23);
+            ClienteTextBox.TabIndex = 8;
+            ClienteTextBox.KeyPress += Nombre_KeyPress;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(226, 163);
+            label2.Location = new Point(556, 163);
             label2.Name = "label2";
-            label2.Size = new Size(36, 15);
+            label2.Size = new Size(39, 15);
             label2.TabIndex = 9;
-            label2.Text = "Valor:";
+            label2.Text = "Envio:";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(509, 163);
+            label3.Location = new Point(88, 163);
             label3.Name = "label3";
             label3.Size = new Size(47, 15);
             label3.TabIndex = 10;
             label3.Text = "Cliente:";
+            // 
+            // TallaTextBox
+            // 
+            TallaTextBox.Location = new Point(360, 160);
+            TallaTextBox.Name = "TallaTextBox";
+            TallaTextBox.Size = new Size(151, 23);
+            TallaTextBox.TabIndex = 11;
+            TallaTextBox.KeyPress += Talla_KeyPress;
+            // 
+            // Talla
+            // 
+            Talla.AutoSize = true;
+            Talla.Location = new Point(321, 163);
+            Talla.Name = "Talla";
+            Talla.Size = new Size(33, 15);
+            Talla.TabIndex = 12;
+            Talla.Text = "Talla:";
             // 
             // formScrap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(761, 410);
+            Controls.Add(Talla);
+            Controls.Add(TallaTextBox);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(ClienteTextBox);
+            Controls.Add(EnvioTextBox);
             Controls.Add(btnGuardarExcel);
             Controls.Add(lblDirectorio);
             Controls.Add(btnSeleccionarDirectorio);
@@ -179,9 +200,11 @@ namespace SheinScraperApp
         private Button btnSeleccionarDirectorio;
         private Label lblDirectorio;
         private Button btnGuardarExcel;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox EnvioTextBox;
+        private TextBox ClienteTextBox;
         private Label label2;
         private Label label3;
+        private TextBox TallaTextBox;
+        private Label Talla;
     }
 }
