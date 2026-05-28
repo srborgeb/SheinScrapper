@@ -1,19 +1,20 @@
-using AngleSharp.Text; // Para el formato numérico
-using OfficeOpenXml; // Para EPPlus
-// Nuevas referencias para Selenium
+using AngleSharp.Text;
+using OfficeOpenXml;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome; // Para Chrome
-using OpenQA.Selenium.Support.UI; // Para WebDriverWait
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
-using System.Globalization; // Para la cultura y formato numérico
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq; // Para LINQ en Excel
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WebDriverManager; // Añadido para la gestión automática del driver
-using WebDriverManager.DriverConfigs.Impl; // Añadido para la configuración de Chrome
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
+using WebDriverManager.Helpers;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SheinScraperApp
@@ -21,77 +22,72 @@ namespace SheinScraperApp
     public partial class formScrap : Form
     {
         private string _carpetaSeleccionada = "";
-        private string _productoNombre = "";
-        private string _productoPrecio = "";
-        private string _productoDescuento = "";
-        private string _productoSku = "";
-        private string _productoImagenUrl = "";
+        private string _rutaPerfilChrome; // Antes _chromeUserProfilePath
 
-        // Ruta del perfil temporal para Chrome
-        private string _chromeUserProfilePath;
+        // --- ESTRUCTURA DE DATOS PARA MULTIPLES PRODUCTOS ---
+        public class ProductoShein
+        {
+            public string Sku { get; set; }
+            public string Nombre { get; set; }
+            public double Precio { get; set; }
+            public string Descuento { get; set; }
+            public string ImagenUrl { get; set; }
+            public string RutaImagenLocal { get; set; }
+        }
+
+        // Lista global para mantener los productos extraídos
+        private List<ProductoShein> _listaProductos = new List<ProductoShein>();
 
         public formScrap()
         {
             InitializeComponent();
-            _chromeUserProfilePath = Path.Combine(Path.GetTempPath(), "SheinScraperChromeProfile");
-            Directory.CreateDirectory(_chromeUserProfilePath); // Asegura que la carpeta de chrome exista.
+            _rutaPerfilChrome = Path.Combine(Path.GetTempPath(), "SheinScraperChromeProfile");
+            Directory.CreateDirectory(_rutaPerfilChrome);
 
-            txtUrlProducto.Enter += TxtUrlProducto_Enter; // Modificación para seleccionar todo el texto al entrar
-            txtUrlProducto.Text = ""; // Inicializar el campo de texto vacío
+            // Habilitar soporte multilínea (por si no lo has hecho en el diseñador visual)
+            txtUrlProducto.Multiline = true;
+            txtUrlProducto.ScrollBars = ScrollBars.Vertical;
+
+            txtUrlProducto.Enter += TxtUrlProducto_Enter;
+            txtUrlProducto.Text = "";
         }
 
-        string _SeparadorDecimal = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        string _separadorDecimal = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
         private void TxtUrlProducto_Enter(object sender, EventArgs e)
         {
-            // Selecciona todo el texto en la caja de texto cuando obtiene el foco - No funciona
             txtUrlProducto.SelectAll();
         }
 
         private void Valor_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //Solo recibe numeros y el separador decimal como entrada
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != _SeparadorDecimal[0])
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != _separadorDecimal[0])
             {
                 e.Handled = true;
             }
-
-            //Si ya existe un un separador separador igonora la siguiente pulsacion de este
-            //if (e.KeyChar == _SeparadorDecimal[0] && (sender as TextBox).Text.IndexOf(_SeparadorDecimal) > -1)
-            //{
-            //    e.Handled = true;
-            // }
         }
-        
+
         private void Nombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permitir solo letras, numeros y espacios
             if (!char.IsControl(e.KeyChar) && !char.IsLetterOrDigit(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;
             }
-
-            //if (string.IsNullOrEmpty((sender as TextBox).Text))
-            //{
-            //    MessageBox.Show("El campo de nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
         }
 
         private void Talla_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            // Omitido como solicitaste
         }
-
 
         private void btnSeleccionarDirectorio_Click(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            using (var exploradorCarpetas = new FolderBrowserDialog())
             {
-                DialogResult result = fbd.ShowDialog();
-                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                DialogResult resultado = exploradorCarpetas.ShowDialog();
+                if (resultado == DialogResult.OK && !string.IsNullOrWhiteSpace(exploradorCarpetas.SelectedPath))
                 {
-                    _carpetaSeleccionada = fbd.SelectedPath;
+                    _carpetaSeleccionada = exploradorCarpetas.SelectedPath;
                     lblDirectorio.Text = $"Carpeta: {_carpetaSeleccionada}";
                 }
             }
@@ -99,442 +95,370 @@ namespace SheinScraperApp
 
         private async void btnScrape_Click(object sender, EventArgs e)
         {
-            string productUrl = txtUrlProducto.Text.Trim();
+            // 1. Extraer todas las URLs validas del cuadro de texto multilínea
+            var urlsSinProcesar = txtUrlProducto.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> urlsValidas = new List<string>();
 
-            if (string.IsNullOrEmpty(productUrl) || !Uri.IsWellFormedUriString(productUrl, UriKind.Absolute))
+            foreach (var url in urlsSinProcesar)
             {
-                MessageBox.Show("Por favor, introduce una URL de producto válida.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string urlLimpia = url.Trim();
+                if (!string.IsNullOrEmpty(urlLimpia) && Uri.IsWellFormedUriString(urlLimpia, UriKind.Absolute))
+                {
+                    urlsValidas.Add(urlLimpia);
+                }
+            }
+
+            if (urlsValidas.Count == 0)
+            {
+                MessageBox.Show("Por favor, introduce al menos una URL de producto válida.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Validar que se seleccionó una carpeta válida
             if (string.IsNullOrEmpty(_carpetaSeleccionada) || !Directory.Exists(_carpetaSeleccionada))
             {
                 MessageBox.Show("Por favor, selecciona una carpeta válida para guardar las imágenes y el Excel antes de scrapear.", "Carpeta no seleccionada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(EnvioTextBox.Text) || string.IsNullOrWhiteSpace(ClienteTextBox.Text))
+            {
+                MessageBox.Show("Por favor, completa los campos de 'Envío' y 'Cliente' para que el Excel final se calcule correctamente.", "Faltan Datos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             rtbResultado.Clear();
-            rtbResultado.AppendText("Iniciando scraping con Selenium (lanzando Chrome automatizado)... Por favor, espera.\n");
-            btnScrape.Enabled = false;
+            rtbResultado.AppendText($"Se encontraron {urlsValidas.Count} enlaces para procesar.\n");
+            rtbResultado.AppendText("Iniciando extracción con Selenium... Por favor, espera.\n\n");
 
-            IWebDriver driver = null;
+            btnScrape.Enabled = false;
+            _listaProductos.Clear(); // Limpiamos la lista para un nuevo lote
+
+            IWebDriver navegador = null; // Antes 'driver'
             try
             {
-                // WebDriverManager descargará el chromedriver.exe a una ubicación conocida por Selenium.
-                new DriverManager().SetUpDriver(new ChromeConfig());
+                // Configuración de Selenium (Ocurre UNA sola vez por lote)
+                new DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
+                var servicio = ChromeDriverService.CreateDefaultService();
+                servicio.SuppressInitialDiagnosticInformation = true;
 
-                var service = ChromeDriverService.CreateDefaultService();
-                service.SuppressInitialDiagnosticInformation = true;
+                ChromeOptions opciones = new ChromeOptions();
+                opciones.AddArgument($"--user-data-dir={_rutaPerfilChrome}");
+                opciones.AddArgument("--profile-directory=Default");
+                opciones.AddArgument("--disable-blink-features=AutomationControlled");
+                opciones.AddExcludedArgument("enable-automation");
+                opciones.AddArgument("--disable-infobars");
+                opciones.AddArgument("--start-maximized");
+                opciones.AddArgument("--no-sandbox");
+                opciones.AddArgument("--disable-dev-shm-usage");
+                opciones.AddArgument("--disable-gpu");
+                opciones.AddArgument("--lang=es");
 
-                ChromeOptions options = new ChromeOptions();
+                navegador = new ChromeDriver(servicio, opciones);
+                navegador.Manage().Window.Maximize();
+                System.Threading.Thread.Sleep(2000);
 
-                options.AddArgument($"--user-data-dir={_chromeUserProfilePath}");
-                options.AddArgument("--profile-directory=Default"); // selenium usará el perfil por defecto 
+                navegador.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                navegador.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(90);
+                WebDriverWait esperaLarga = new WebDriverWait(navegador, TimeSpan.FromSeconds(60));
 
-                //habilitar modo stealth para evitar detección de automatización
-                options.AddArgument("--disable-blink-features=AutomationControlled");
-                options.AddExcludedArgument("enable-automation");
-                options.AddArgument("--disable-infobars");
-                options.AddArgument("--start-maximized"); // Inicia maximizado
-                options.AddArgument("--no-sandbox"); // Necesario para algunos entornos de ejecución
-                options.AddArgument("--disable-dev-shm-usage");
-                options.AddArgument("--disable-gpu"); // Deshabilita la aceleración por hardware.
+                bool popupsCerrados = false; // Variable para saber si ya libramos la página del pop-up
 
-                //solicitur idioma español
-                options.AddArgument("--lang=es");
-
-                //abrir chrome
-                driver = new ChromeDriver(service, options);
-                driver.Manage().Window.Maximize(); // Asegura que la ventana esté maximizada después de abrir
-                System.Threading.Thread.Sleep(2000); // Pequeña pausa para que el navegador abra completamente
-
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(90);
-
-                rtbResultado.AppendText($"Navegando a: {productUrl}\n");
-                try
+                // --- BUCLE MASIVO: PROCESAR CADA URL ---
+                int contador = 1;
+                foreach (string urlProducto in urlsValidas)
                 {
-                    driver.Navigate().GoToUrl(productUrl);
-                    rtbResultado.AppendText("Navegación solicitada.\n");
+                    rtbResultado.AppendText($"--- Procesando {contador}/{urlsValidas.Count} ---\n");
+                    rtbResultado.AppendText($"URL: {urlProducto}\n");
 
-                    // Espera a que la URL actual contenga "us.shein.com" para confirmar la navegación
-                    WebDriverWait urlWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-                    urlWait.Until(d => d.Url.Contains("us.shein.com", StringComparison.OrdinalIgnoreCase));
-                    rtbResultado.AppendText($"Actualmente en URL: {driver.Url}\n"); // Muestra la URL real
-                }
-                catch (Exception navEx)
-                {
-                    rtbResultado.AppendText($"Error durante la navegación inicial a {productUrl}: {navEx.Message}\n");
-                    throw new Exception("Error de navegación inicial. La URL podría estar bloqueada o no accesible.");
-                }
-
-                //Menaje de pop-ups de cookies
-                try
-                {
-                    WebDriverWait shortWait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                    IWebElement acceptCookiesButton = shortWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(".cookie-popup-accept-button, #onetrust-accept-btn-handler, [aria-label='Aceptar cookies'], .shein-button-black, .s-btn-primary")));
-
-                    if (acceptCookiesButton != null && acceptCookiesButton.Displayed && acceptCookiesButton.Enabled)
-                    {
-                        acceptCookiesButton.Click();
-                        rtbResultado.AppendText("Se hizo clic en el botón de aceptar cookies/pop-up.\n");
-                        System.Threading.Thread.Sleep(2000); // Pequeña pausa después de interactuar
-                    }
-                }
-                catch (WebDriverTimeoutException)
-                {
-                    rtbResultado.AppendText("No se detectó o no se pudo cerrar un pop-up inicial de cookies.\n");
-                }
-                catch (ElementClickInterceptedException)
-                {
-                    rtbResultado.AppendText("No se pudo hacer clic en el pop-up, algo lo interceptó. Intentando de nuevo o continuando.\n");
-                    System.Threading.Thread.Sleep(2000);
-                }
-                catch (Exception ex)
-                {
-                    rtbResultado.AppendText($"Error al intentar cerrar pop-up: {ex.Message}\n");
-                }
-
-                //Espera extendida para que el contenido del producto cargue completamente
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(300)); // 5 minutos de espera para CAPTCHA/carga completa
-
-                rtbResultado.AppendText("Esperando que el contenido del producto cargue (buscando el nombre del producto)...\n");
-                IWebElement nameElement = null;
-                try
-                {
-                    nameElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(".product-intro__head-name")));
-                    _productoNombre = nameElement.Text;
-                    rtbResultado.AppendText("Contenido principal del producto cargado.\n");
-                }
-                catch (WebDriverTimeoutException)
-                {
-                    rtbResultado.AppendText("¡Advertencia! El nombre del producto no se hizo visible a tiempo.\n");
-                    rtbResultado.AppendText("Esto podría deberse a un CAPTCHA, un bloqueo o una carga extremadamente lenta.\n");
-                    rtbResultado.AppendText("Por favor, revisa la ventana del navegador que se abrió y resuelve cualquier CAPTCHA o interacción manual necesaria.\n");
-
-                    //Mensaje de espera para resolver CAPTCHA
-                    MessageBox.Show("Se ha detectado un posible CAPTCHA o bloqueo.\n\nPor favor, resuelve la verificación en la ventana del navegador que se abrió (puedes iniciar sesión si es necesario).\n\nLa aplicación continuará automáticamente una vez que el contenido sea accesible. Si ya lo has resuelto, haz clic en Aceptar aquí.", "Resolver CAPTCHA Manualmente", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                    // Después de hacer clic en Aceptar en captcha, intentamos de nuevo obtener los datos de la pagina
                     try
                     {
-                        nameElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(".product-intro__head-name")));
-                        _productoNombre = nameElement.Text;
-                        rtbResultado.AppendText("Parece que el CAPTCHA fue resuelto o la página cargó. Continuando.\n");
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception($"El contenido del producto no se pudo cargar o el CAPTCHA no fue resuelto después de la intervención: {ex.Message}");
-                    }
-                }
-                catch (NoSuchElementException)
-                {
-                    throw new Exception("El elemento del nombre del producto no fue encontrado después de la carga de la página. El selector CSS podría ser incorrecto.");
-                }
+                        navegador.Navigate().GoToUrl(urlProducto);
 
-                // Manejo de posibles elementos nulos
-                // --- INICIA BLOQUE DE BÚSQUEDA DE PRECIO ROBUSTO ---
-
-                // Lista de selectores CSS para el precio, ordenados por probabilidad.
-                var selectoresDePrecio = new List<string>
-{
-    "span.price-real",                             // Selector más reciente y específico.
-    ".product-intro__head-price .sale-price",      // Otro selector común para precios en oferta.
-    ".product-intro__head-price .original-price",  // Para precios sin oferta.
-    "p.productDiscountInfo__retail",               // Selector antiguo que tenías.
-    "p.productEstimatedTagNewRetail__retail",      // Selector antiguo que tenías.
-    ".productPrice__main span:nth-of-type(2)"      // Selector antiguo que tenías.
-};
-
-                _productoPrecio = "N/A"; // Valor por defecto si no se encuentra el precio.
-
-                // Bucle para probar cada selector hasta encontrar una coincidencia.
-                foreach (var selector in selectoresDePrecio)
-                {
-                    try
-                    {
-                        IWebElement priceElement = driver.FindElement(By.CssSelector(selector));
-
-                        // Si el elemento es visible, procesamos el precio.
-                        if (priceElement.Displayed)
+                        // Cerrar pop-up de cookies (Solo lo intentamos seriamente en el primer enlace o si no se ha cerrado)
+                        if (!popupsCerrados)
                         {
-                            string rawPrice = priceElement.Text.Replace("$", "").Trim();
-
-                            if (decimal.TryParse(rawPrice, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal priceValue))
+                            try
                             {
-                                _productoPrecio = priceValue.ToString(CultureInfo.InvariantCulture);
-                                rtbResultado.AppendText($"Precio encontrado con el selector: '{selector}'\n");
-                                break; // ¡Éxito! Salimos del bucle.
+                                WebDriverWait esperaCorta = new WebDriverWait(navegador, TimeSpan.FromSeconds(5));
+                                IWebElement botonAceptarCookies = esperaCorta.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(".cookie-popup-accept-button, #onetrust-accept-btn-handler, [aria-label='Aceptar cookies'], .shein-button-black, .s-btn-primary")));
+
+                                if (botonAceptarCookies != null && botonAceptarCookies.Displayed)
+                                {
+                                    botonAceptarCookies.Click();
+                                    popupsCerrados = true;
+                                    System.Threading.Thread.Sleep(1000);
+                                }
+                            }
+                            catch { /* Ignorar silenciosamente si no hay pop-up */ }
+                        }
+
+                        // Obtener Nombre
+                        IWebElement elementoNombre = esperaLarga.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(".product-intro__head-name")));
+                        string nombre = elementoNombre.Text;
+
+                        // Obtener Precio
+                        double precioFinal = 0;
+                        var selectoresDePrecio = new List<string> { "span.price-real", ".product-intro__head-price .sale-price", ".product-intro__head-price .original-price", "p.productDiscountInfo__retail", "p.productEstimatedTagNewRetail__retail", ".productPrice__main span:nth-of-type(2)" };
+
+                        foreach (var selector in selectoresDePrecio)
+                        {
+                            try
+                            {
+                                IWebElement elementoPrecio = navegador.FindElement(By.CssSelector(selector));
+                                if (elementoPrecio.Displayed)
+                                {
+                                    string precioCrudo = elementoPrecio.Text.Replace("$", "").Trim();
+                                    if (double.TryParse(precioCrudo, NumberStyles.Any, CultureInfo.InvariantCulture, out precioFinal))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            catch (NoSuchElementException) { continue; }
+                        }
+
+                        // Obtener Descuento
+                        string descuento = "N/A";
+                        try
+                        {
+                            IWebElement elementoDescuento = navegador.FindElement(By.CssSelector(".productDiscountPercent"));
+                            descuento = elementoDescuento.Text;
+                        }
+                        catch (NoSuchElementException) { }
+
+                        // Obtener SKU
+                        string sku = "";
+                        try
+                        {
+                            IWebElement elementoSku = navegador.FindElement(By.CssSelector(".product-intro__head-sku span"));
+                            sku = elementoSku.Text.Replace("SKU: ", "").Trim();
+                        }
+                        catch (NoSuchElementException)
+                        {
+                            try
+                            {
+                                var elementosConSku = navegador.FindElements(By.CssSelector("[data-sku]"));
+                                foreach (var elementoWeb in elementosConSku)
+                                {
+                                    string atributoDataSku = elementoWeb.GetAttribute("data-sku");
+                                    if (!string.IsNullOrEmpty(atributoDataSku)) { sku = atributoDataSku; break; }
+                                }
+                            }
+                            catch { }
+
+                            if (string.IsNullOrEmpty(sku))
+                            {
+                                var coincidenciaRegex = System.Text.RegularExpressions.Regex.Match(urlProducto, @"/p-(\d+)(?:-\d+)?\.html");
+                                sku = coincidenciaRegex.Success ? coincidenciaRegex.Groups[1].Value : $"Desconocido_{Guid.NewGuid().ToString().Substring(0, 5)}";
                             }
                         }
-                    }
-                    catch (NoSuchElementException)
-                    {
-                        // Si el selector no encuentra nada, simplemente continuamos con el siguiente.
-                        continue;
-                    }
-                    catch (Exception ex)
-                    {
-                        // Captura otros posibles errores, como que el elemento no esté visible.
-                        rtbResultado.AppendText($"Error con el selector '{selector}': {ex.Message}\n");
-                    }
-                }
 
-                // Comprobación final por si ningún selector funcionó.
-                if (_productoPrecio == "N/A")
-                {
-                    rtbResultado.AppendText("ADVERTENCIA: No se pudo encontrar el precio con ninguno de los selectores probados.\n");
-                }
+                        // Obtener Imagen usando tu método robusto
+                        string imagenUrl = ExtraerUrlImagen(navegador);
+                        string rutaImagenDescargada = "N/A";
 
-                // --- TERMINA BLOQUE DE BÚSQUEDA DE PRECIO ---
-
-                IWebElement discountElement = null;
-                try
-                {
-                    // Selector para el porcentaje de descuento
-                    discountElement = driver.FindElement(By.CssSelector(".productDiscountPercent"));
-                    _productoDescuento = discountElement.Text;
-                }
-                catch (NoSuchElementException) { _productoDescuento = "N/A"; }
-
-                IWebElement skuElement = null;
-                try
-                {
-                    skuElement = driver.FindElement(By.CssSelector(".product-intro__head-sku span"));
-                    _productoSku = skuElement.Text.Replace("SKU: ", "").Trim();
-                }
-                catch (NoSuchElementException)
-                {
-                    // Intentar obtener de data-sku si existe en algún elemento
-                    try
-                    {
-                        var elementsWithSku = driver.FindElements(By.CssSelector("[data-sku]"));
-                        foreach (var el in elementsWithSku)
+                        if (imagenUrl != "N/A")
                         {
-                            string dataSku = el.GetAttribute("data-sku");
-                            if (!string.IsNullOrEmpty(dataSku))
-                            {
-                                _productoSku = dataSku;
-                                break;
-                            }
+                            await DescargarImagenAsync(imagenUrl, _carpetaSeleccionada, sku);
+                            rutaImagenDescargada = Path.Combine(_carpetaSeleccionada, $"{sku}.jpg");
                         }
-                    }
-                    catch { /* Ignorar, el SKU se intentará de la URL */ }
 
-                    if (_productoSku == "")
-                    {
-                        //Extraer SKU de la URL si no se encuentra en el HTML
-                        var match = System.Text.RegularExpressions.Regex.Match(productUrl, @"/p-(\d+)(?:-\d+)?\.html");
-                        if (match.Success)
+                        // Guardar en la estructura de memoria
+                        _listaProductos.Add(new ProductoShein
                         {
-                            _productoSku = match.Groups[1].Value;
-                        }
-                        else
-                        {
-                            _productoSku = "N/A (No encontrado)";
-                        }
+                            Sku = sku,
+                            Nombre = nombre,
+                            Precio = precioFinal,
+                            Descuento = descuento,
+                            ImagenUrl = imagenUrl,
+                            RutaImagenLocal = rutaImagenDescargada
+                        });
+
+                        rtbResultado.AppendText($"-> ¡Extraído con éxito! SKU: {sku} | Precio: ${precioFinal}\n\n");
                     }
+                    catch (Exception excepcionProducto)
+                    {
+                        rtbResultado.AppendText($"[!] Error al extraer el producto {urlProducto}: {excepcionProducto.Message}\nSaltando al siguiente...\n\n");
+                    }
+
+                    contador++;
                 }
 
-                IWebElement imageElement = null;
-                try
+                rtbResultado.AppendText($"=== EXTRACCIÓN FINALIZADA ===\nSe extrajeron {_listaProductos.Count} productos exitosamente.\n");
+
+                // Escribir automáticamente al final todo el lote a Excel
+                if (_listaProductos.Count > 0)
                 {
-                    // Selector para la imagen principal
-                    imageElement = driver.FindElement(By.CssSelector("div.normal-picture.one-picture__normal img.crop-image-container__img"));
-                    string imageUrlAttribute = imageElement.GetAttribute("src");
-
-                    // Shein a veces usa src="//..." o data-src="//..." para lazy loading.
-                    if (imageUrlAttribute.StartsWith("//"))
-                    {
-                        _productoImagenUrl = "https:" + imageUrlAttribute;
-                    }
-                    else
-                    {
-                        _productoImagenUrl = imageUrlAttribute;
-                    }
-
-                    // Si la imagen es un placeholder de lazyload, intentar data-src
-                    if (_productoImagenUrl.Contains("bg-grey") || _productoImagenUrl.Contains("placeholder"))
-                    {
-                        string dataSrc = imageElement.GetAttribute("data-src");
-                        if (!string.IsNullOrEmpty(dataSrc) && dataSrc.StartsWith("//"))
-                        {
-                            _productoImagenUrl = "https:" + dataSrc;
-                        }
-                        else if (!string.IsNullOrEmpty(dataSrc))
-                        {
-                            _productoImagenUrl = dataSrc;
-                        }
-                    }
-                }
-                catch (NoSuchElementException) { _productoImagenUrl = "N/A"; }
-
-
-                rtbResultado.Clear();
-                rtbResultado.AppendText("Datos del Producto:\n");
-                rtbResultado.AppendText($"Nombre: {_productoNombre}\n");
-                rtbResultado.AppendText($"Precio: {_productoPrecio}\n");
-                rtbResultado.AppendText($"Descuento: {_productoDescuento}\n");
-                rtbResultado.AppendText($"SKU: {_productoSku}\n");
-                rtbResultado.AppendText($"URL de Imagen: {_productoImagenUrl}\n");
-
-                if (_productoImagenUrl != "N/A" && !string.IsNullOrEmpty(_carpetaSeleccionada))
-                {
-                    rtbResultado.AppendText("Descargando imagen...\n");
-                    await DownloadImageAsync(_productoImagenUrl, _carpetaSeleccionada, _productoSku);
-                    rtbResultado.AppendText("Imagen descargada.\n");
-                }
-                else if (string.IsNullOrEmpty(_carpetaSeleccionada))
-                {
-                    rtbResultado.AppendText("No se ha seleccionado una carpeta para descargar la imagen.\n");
-                }
-                else
-                {
-                    rtbResultado.AppendText("No se pudo obtener la URL de la imagen.\n");
+                    GuardarLoteEnExcel();
                 }
             }
-            catch (Exception ex)
+            catch (Exception excepcion)
             {
-                rtbResultado.AppendText($"Ocurrió un error: {ex.Message}\n");
-                rtbResultado.AppendText("Por favor, verifica la URL y asegúrate de que el driver del navegador esté instalado correctamente.\n");
+                rtbResultado.AppendText($"Ocurrió un error crítico: {excepcion.Message}\n");
             }
             finally
             {
                 btnScrape.Enabled = true;
-                if (driver != null)
+                if (navegador != null)
                 {
-                    driver.Quit(); // Cierra el navegador
+                    navegador.Quit();
                 }
-                txtUrlProducto.Text = ""; // Inicializar el campo de texto vacío
-
             }
         }
 
-        private async Task DownloadImageAsync(string imageUrl, string folderPath, string sku)
+        // --- MÉTODO PARA EXTRAER IMAGEN ---
+        private string ExtraerUrlImagen(IWebDriver navegador)
         {
-            if (string.IsNullOrEmpty(imageUrl) || string.IsNullOrEmpty(folderPath) || string.IsNullOrEmpty(sku))
+            string urlImagen = "N/A";
+            string[] selectoresImagen = new string[]
             {
-                return;
-            }
+                "div.normal-picture.one-picture__normal img.crop-image-container__img",
+                ".product-intro__main img",
+                ".crop-image-container img",
+                ".gallery-image-item img",
+                ".product-image img",
+                "div[data-role='product-image'] img"
+            };
 
-            try
+            foreach (var selector in selectoresImagen)
             {
-                using (HttpClient client = new HttpClient())
+                try
                 {
-                    byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
-                    string fileName = $"{sku}.jpg";
-                    string filePath = Path.Combine(folderPath, fileName);
-                    await File.WriteAllBytesAsync(filePath, imageBytes);
-                    rtbResultado.AppendText($"Imagen guardada en: {filePath}\n");
-                }
-            }
-            catch (Exception ex)
-            {
-                rtbResultado.AppendText($"Error al descargar o guardar la imagen: {ex.Message}\n");
-            }
-        }
-
-        private void btnGuardarExcel_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(_productoSku) || _productoSku == "N/A")
-            {
-                MessageBox.Show("No hay datos de producto para guardar. Por favor, realiza un scraping primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(_carpetaSeleccionada))
-            {
-                MessageBox.Show("Por favor, selecciona una carpeta para guardar el archivo Excel.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-
-            if (string.IsNullOrWhiteSpace(EnvioTextBox.Text) || string.IsNullOrWhiteSpace(ClienteTextBox.Text))
-            {
-                MessageBox.Show("Por favor, completa ambos campos antes de continuar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                return;
-            }
-            ;
-
-            string excelFileName = "ProductosShein.xlsx";
-            string excelFilePath = Path.Combine(_carpetaSeleccionada, excelFileName);
-
-            try
-            {
-                FileInfo newFile = new FileInfo(excelFilePath);
-
-                using (ExcelPackage package = new ExcelPackage(newFile))
-                {
-                    ExcelWorksheet worksheet;
-
-                    if (newFile.Exists && package.Workbook.Worksheets.Any())
+                    var nodosImagen = navegador.FindElements(By.CssSelector(selector));
+                    if (nodosImagen.Count > 0)
                     {
-                        worksheet = package.Workbook.Worksheets.First();
+                        var nodoImagen = nodosImagen[0];
+                        string atributoSrc = nodoImagen.GetAttribute("src");
+                        string atributoDataSrc = nodoImagen.GetAttribute("data-src");
+
+                        string urlTemporal = atributoSrc;
+
+                        if (string.IsNullOrEmpty(urlTemporal) || urlTemporal.Contains("bg-grey") || urlTemporal.Contains("placeholder"))
+                        {
+                            if (!string.IsNullOrEmpty(atributoDataSrc)) { urlTemporal = atributoDataSrc; }
+                        }
+
+                        if (!string.IsNullOrEmpty(urlTemporal) && urlTemporal.StartsWith("//"))
+                        {
+                            urlTemporal = "https:" + urlTemporal;
+                        }
+
+                        if (!string.IsNullOrEmpty(urlTemporal) && !urlTemporal.Contains("bg-grey") && !urlTemporal.Contains("placeholder"))
+                        {
+                            urlImagen = urlTemporal;
+                            break;
+                        }
+                    }
+                }
+                catch (Exception) { continue; }
+            }
+
+            return string.IsNullOrEmpty(urlImagen) ? "N/A" : urlImagen;
+        }
+
+        private async Task DescargarImagenAsync(string urlImagen, string rutaCarpeta, string sku)
+        {
+            if (string.IsNullOrEmpty(urlImagen) || string.IsNullOrEmpty(rutaCarpeta) || string.IsNullOrEmpty(sku)) return;
+
+            try
+            {
+                using (HttpClient clienteHttp = new HttpClient())
+                {
+                    byte[] bytesDeImagen = await clienteHttp.GetByteArrayAsync(urlImagen);
+                    string nombreArchivo = $"{sku}.jpg";
+                    string rutaArchivo = Path.Combine(rutaCarpeta, nombreArchivo);
+                    await File.WriteAllBytesAsync(rutaArchivo, bytesDeImagen);
+                }
+            }
+            catch (Exception excepcion)
+            {
+                rtbResultado.AppendText($"[!] Error al descargar imagen del SKU {sku}: {excepcion.Message}\n");
+            }
+        }
+
+        // --- LÓGICA DE EXPORTACIÓN MASIVA A EXCEL ---
+        private void GuardarLoteEnExcel()
+        {
+            string nombreArchivoExcel = "ProductosShein.xlsx";
+            string rutaArchivoExcel = Path.Combine(_carpetaSeleccionada, nombreArchivoExcel);
+
+            double valorEnvio = 0;
+            double.TryParse(EnvioTextBox.Text, out valorEnvio);
+            string nombreCliente = ClienteTextBox.Text;
+
+            try
+            {
+                FileInfo nuevoArchivo = new FileInfo(rutaArchivoExcel);
+                using (ExcelPackage paqueteExcel = new ExcelPackage(nuevoArchivo))
+                {
+                    ExcelWorksheet hojaDeCalculo;
+
+                    if (nuevoArchivo.Exists && paqueteExcel.Workbook.Worksheets.Any())
+                    {
+                        hojaDeCalculo = paqueteExcel.Workbook.Worksheets.First();
                     }
                     else
                     {
-                        worksheet = package.Workbook.Worksheets.Add("Datos Productos");
-                        worksheet.Cells[1, 1].Value = "SKU";
-                        worksheet.Cells[1, 2].Value = "Nombre Articulo";
-                        worksheet.Cells[1, 3].Value = "Talla";
-                        worksheet.Cells[1, 4].Value = "Precio";
-                        worksheet.Cells[1, 5].Value = "Descuento";
-                        worksheet.Cells[1, 6].Value = "Envio";
-                        worksheet.Cells[1, 7].Value = "Cliente";
-                        worksheet.Cells[1, 8].Value = "Precio Total";
-                        worksheet.Cells[1, 9].Value = "URL Imagen";
-                        worksheet.Cells[1, 10].Value = "Ruta Imagen Local";
+                        hojaDeCalculo = paqueteExcel.Workbook.Worksheets.Add("Datos Productos");
+                        // Nueva estructura sin la columna "Talla" (9 columnas en total)
+                        hojaDeCalculo.Cells[1, 1].Value = "SKU";
+                        hojaDeCalculo.Cells[1, 2].Value = "Nombre Articulo";
+                        hojaDeCalculo.Cells[1, 3].Value = "Precio";
+                        hojaDeCalculo.Cells[1, 4].Value = "Descuento";
+                        hojaDeCalculo.Cells[1, 5].Value = "Envio";
+                        hojaDeCalculo.Cells[1, 6].Value = "Cliente";
+                        hojaDeCalculo.Cells[1, 7].Value = "Precio Total";
+                        hojaDeCalculo.Cells[1, 8].Value = "URL Imagen";
+                        hojaDeCalculo.Cells[1, 9].Value = "Ruta Imagen Local";
 
-                        worksheet.Cells[1, 1, 1, 10].AutoFitColumns();
+                        hojaDeCalculo.Cells[1, 1, 1, 9].AutoFitColumns();
                     }
 
-                    int rowCount = worksheet.Dimension?.Rows ?? 0;
-                    int newRow = rowCount + 1;
+                    int totalFilas = hojaDeCalculo.Dimension?.Rows ?? 0;
+                    int nuevaFila = totalFilas + 1;
 
+                    // Agregar todas las filas del lote actual
+                    foreach (var producto in _listaProductos)
+                    {
+                        double precioTotalCalculado = Math.Round((producto.Precio * 1.07) + valorEnvio, 2);
 
+                        hojaDeCalculo.Cells[nuevaFila, 1].Value = producto.Sku;
+                        hojaDeCalculo.Cells[nuevaFila, 2].Value = producto.Nombre;
+                        hojaDeCalculo.Cells[nuevaFila, 3].Value = producto.Precio;
+                        hojaDeCalculo.Cells[nuevaFila, 4].Value = producto.Descuento;
+                        hojaDeCalculo.Cells[nuevaFila, 5].Value = valorEnvio;
+                        hojaDeCalculo.Cells[nuevaFila, 6].Value = nombreCliente;
+                        hojaDeCalculo.Cells[nuevaFila, 7].Value = precioTotalCalculado;
+                        hojaDeCalculo.Cells[nuevaFila, 8].Value = producto.ImagenUrl;
+                        hojaDeCalculo.Cells[nuevaFila, 9].Value = producto.RutaImagenLocal;
 
-                    double _Envio = 0;
-                    double.TryParse(EnvioTextBox.Text, out _Envio);
+                        nuevaFila++;
+                    }
 
-                    string _Cliente = ClienteTextBox.Text;
-
-                    double.TryParse(_productoPrecio, NumberStyles.Any, CultureInfo.InvariantCulture, out double _productoPrecioDouble);
-                    double _PrecioTotal = Math.Round((_productoPrecioDouble * 1.07) + _Envio, 2);
-                    _productoPrecio = _productoPrecioDouble.ToString();
-                    _productoPrecio = _productoPrecio.Replace('.', ',');
-
-                    string _Talla = TallaTextBox.Text;
-
-                    worksheet.Cells[newRow, 1].Value = _productoSku;
-                    worksheet.Cells[newRow, 2].Value = _productoNombre;
-                    worksheet.Cells[newRow, 3].Value = _Talla;
-                    worksheet.Cells[newRow, 4].Value = _productoPrecioDouble;
-                    worksheet.Cells[newRow, 5].Value = _productoDescuento;
-                    worksheet.Cells[newRow, 6].Value = _Envio;
-                    worksheet.Cells[newRow, 7].Value = _Cliente;
-                    worksheet.Cells[newRow, 8].Value = _PrecioTotal;
-                    worksheet.Cells[newRow, 9].Value = _productoImagenUrl;
-                    worksheet.Cells[newRow, 10].Value = Path.Combine(_carpetaSeleccionada, $"{_productoSku}.jpg");
-
-                    worksheet.Cells[newRow, 1, newRow, 10].AutoFitColumns();
-
-                    package.Save();
+                    hojaDeCalculo.Cells[1, 1, nuevaFila, 9].AutoFitColumns();
+                    paqueteExcel.Save();
                 }
-                MessageBox.Show($"Datos guardados exitosamente en: {excelFilePath}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                rtbResultado.AppendText($"\n-> ¡Excel actualizado exitosamente en: {rutaArchivoExcel}!\n");
+                MessageBox.Show($"Proceso finalizado. {_listaProductos.Count} productos guardados en Excel.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+            catch (Exception excepcion)
             {
-                MessageBox.Show($"Error al guardar en Excel: {ex.Message}\n" +
-                                "Asegúrate de que el archivo no esté abierto y tengas permisos de escritura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al guardar en Excel: {excepcion.Message}\nAsegúrate de que el archivo no esté abierto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        // Mantenemos el botón manual por si necesitas exportar de nuevo sin scrapear
+        private void btnGuardarExcel_Click(object sender, EventArgs e)
         {
-
+            if (_listaProductos == null || _listaProductos.Count == 0)
+            {
+                MessageBox.Show("No hay datos nuevos en memoria para guardar. Realiza un scraping primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            GuardarLoteEnExcel();
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e) { }
     }
 }

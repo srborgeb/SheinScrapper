@@ -47,7 +47,7 @@ namespace SheinScraperApp
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(31, 116);
+            label1.Location = new Point(31, 95);
             label1.Name = "label1";
             label1.Size = new Size(185, 15);
             label1.TabIndex = 0;
@@ -55,27 +55,30 @@ namespace SheinScraperApp
             // 
             // txtUrlProducto
             // 
-            txtUrlProducto.Location = new Point(222, 113);
+            txtUrlProducto.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtUrlProducto.Location = new Point(222, 92);
+            txtUrlProducto.Multiline = true;
             txtUrlProducto.Name = "txtUrlProducto";
-            txtUrlProducto.Size = new Size(526, 23);
+            txtUrlProducto.Size = new Size(656, 175);
             txtUrlProducto.TabIndex = 1;
             // 
             // btnScrape
             // 
-            btnScrape.Location = new Point(31, 207);
+            btnScrape.Location = new Point(31, 344);
             btnScrape.Name = "btnScrape";
             btnScrape.Size = new Size(151, 50);
-            btnScrape.TabIndex = 2;
+            btnScrape.TabIndex = 5;
             btnScrape.Text = "Iniciar Scrape";
             btnScrape.UseVisualStyleBackColor = true;
             btnScrape.Click += btnScrape_Click;
             // 
             // rtbResultado
             // 
-            rtbResultado.Location = new Point(188, 207);
+            rtbResultado.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtbResultado.Location = new Point(188, 344);
             rtbResultado.Name = "rtbResultado";
             rtbResultado.ReadOnly = true;
-            rtbResultado.Size = new Size(560, 185);
+            rtbResultado.Size = new Size(690, 210);
             rtbResultado.TabIndex = 3;
             rtbResultado.Text = "";
             // 
@@ -84,7 +87,7 @@ namespace SheinScraperApp
             btnSeleccionarDirectorio.Location = new Point(31, 12);
             btnSeleccionarDirectorio.Name = "btnSeleccionarDirectorio";
             btnSeleccionarDirectorio.Size = new Size(151, 72);
-            btnSeleccionarDirectorio.TabIndex = 4;
+            btnSeleccionarDirectorio.TabIndex = 0;
             btnSeleccionarDirectorio.Text = "Seleccionar Carpeta de Descarga";
             btnSeleccionarDirectorio.UseVisualStyleBackColor = true;
             btnSeleccionarDirectorio.Click += btnSeleccionarDirectorio_Click;
@@ -100,7 +103,8 @@ namespace SheinScraperApp
             // 
             // btnGuardarExcel
             // 
-            btnGuardarExcel.Location = new Point(31, 320);
+            btnGuardarExcel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnGuardarExcel.Location = new Point(31, 482);
             btnGuardarExcel.Name = "btnGuardarExcel";
             btnGuardarExcel.Size = new Size(151, 72);
             btnGuardarExcel.TabIndex = 6;
@@ -110,26 +114,26 @@ namespace SheinScraperApp
             // 
             // EnvioTextBox
             // 
-            EnvioTextBox.Location = new Point(597, 160);
+            EnvioTextBox.Location = new Point(555, 286);
             EnvioTextBox.Name = "EnvioTextBox";
             EnvioTextBox.Size = new Size(151, 23);
-            EnvioTextBox.TabIndex = 7;
+            EnvioTextBox.TabIndex = 4;
             EnvioTextBox.TextChanged += textBox1_TextChanged;
             EnvioTextBox.KeyPress += Valor_KeyPress;
             // 
             // ClienteTextBox
             // 
             ClienteTextBox.ForeColor = SystemColors.ControlText;
-            ClienteTextBox.Location = new Point(141, 160);
+            ClienteTextBox.Location = new Point(99, 286);
             ClienteTextBox.Name = "ClienteTextBox";
             ClienteTextBox.Size = new Size(128, 23);
-            ClienteTextBox.TabIndex = 8;
+            ClienteTextBox.TabIndex = 2;
             ClienteTextBox.KeyPress += Nombre_KeyPress;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(556, 163);
+            label2.Location = new Point(514, 289);
             label2.Name = "label2";
             label2.Size = new Size(39, 15);
             label2.TabIndex = 9;
@@ -138,7 +142,7 @@ namespace SheinScraperApp
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(88, 163);
+            label3.Location = new Point(46, 289);
             label3.Name = "label3";
             label3.Size = new Size(47, 15);
             label3.TabIndex = 10;
@@ -146,18 +150,18 @@ namespace SheinScraperApp
             // 
             // TallaTextBox
             // 
-            TallaTextBox.Location = new Point(360, 160);
+            TallaTextBox.Location = new Point(318, 286);
             TallaTextBox.Name = "TallaTextBox";
             TallaTextBox.Size = new Size(151, 23);
-            TallaTextBox.TabIndex = 11;
+            TallaTextBox.TabIndex = 3;
             TallaTextBox.KeyPress += Talla_KeyPress;
             // 
             // Talla
             // 
             Talla.AutoSize = true;
-            Talla.Location = new Point(321, 163);
+            Talla.Location = new Point(279, 289);
             Talla.Name = "Talla";
-            Talla.Size = new Size(33, 15);
+            Talla.Size = new Size(34, 15);
             Talla.TabIndex = 12;
             Talla.Text = "Talla:";
             // 
@@ -165,7 +169,7 @@ namespace SheinScraperApp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(761, 410);
+            ClientSize = new Size(891, 572);
             Controls.Add(Talla);
             Controls.Add(TallaTextBox);
             Controls.Add(label3);
@@ -182,6 +186,7 @@ namespace SheinScraperApp
             Name = "formScrap";
             RightToLeftLayout = true;
             Text = "Shein Scraper";
+            WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
             PerformLayout();
         }

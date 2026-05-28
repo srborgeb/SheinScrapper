@@ -13,11 +13,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("SheinScraperApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a08155bed02d68a1e5b9e304e9f85f80ff40b779")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("26.5.24.8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33f52bb9bfce989978ded2ff5c1a9f57c4b4be2a")]
 [assembly: System.Reflection.AssemblyProductAttribute("SheinScraperApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SheinScraperApp")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("26.5.24.8")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
