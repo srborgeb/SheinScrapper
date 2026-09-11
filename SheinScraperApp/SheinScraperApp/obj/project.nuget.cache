@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oMyJ7PuzQY8=",
+  "dgSpecHash": "rufmngw+Txk=",
   "success": true,
-  "projectFilePath": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+  "projectFilePath": "D:\\Desarrollo\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\srbor\\.nuget\\packages\\anglesharp\\1.1.2\\anglesharp.1.1.2.nupkg.sha512",
     "C:\\Users\\srbor\\.nuget\\packages\\closedxml\\0.105.1\\closedxml.0.105.1.nupkg.sha512",

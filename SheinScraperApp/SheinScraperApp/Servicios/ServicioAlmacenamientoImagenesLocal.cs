@@ -47,17 +47,86 @@ namespace SheinScraperApp.Servicios
             }
         }
 
+        public string ResolverRutaLocal(string? rutaGuardada, string carpetaImagenes, string? sku = null)
+        {
+            // 1. Si la ruta guardada ya existe directamente en el disco actual
+            if (!string.IsNullOrWhiteSpace(rutaGuardada) && File.Exists(rutaGuardada))
+            {
+                return Path.GetFullPath(rutaGuardada);
+            }
+
+            // 2. Si la ruta guardada era una ruta absoluta de otro equipo, buscar el archivo por su nombre dentro de la carpeta actual
+            if (!string.IsNullOrWhiteSpace(rutaGuardada))
+            {
+                string nombreArchivo = Path.GetFileName(rutaGuardada);
+                if (!string.IsNullOrWhiteSpace(nombreArchivo))
+                {
+                    if (!string.IsNullOrWhiteSpace(carpetaImagenes))
+                    {
+                        string candidata = Path.Combine(carpetaImagenes, nombreArchivo);
+                        if (File.Exists(candidata))
+                        {
+                            return Path.GetFullPath(candidata);
+                        }
+                    }
+
+                    string candidataBase = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Imagenes", nombreArchivo);
+                    if (File.Exists(candidataBase))
+                    {
+                        return Path.GetFullPath(candidataBase);
+                    }
+                }
+            }
+
+            // 3. Respaldo directo por SKU
+            if (!string.IsNullOrWhiteSpace(sku))
+            {
+                string skuLimpio = string.Join("_", sku.Split(Path.GetInvalidFileNameChars()));
+                if (!string.IsNullOrWhiteSpace(carpetaImagenes))
+                {
+                    string candidataSku = Path.Combine(carpetaImagenes, $"{skuLimpio}.jpg");
+                    if (File.Exists(candidataSku))
+                    {
+                        return Path.GetFullPath(candidataSku);
+                    }
+                }
+
+                string candidataSkuBase = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Imagenes", $"{skuLimpio}.jpg");
+                if (File.Exists(candidataSkuBase))
+                {
+                    return Path.GetFullPath(candidataSkuBase);
+                }
+            }
+
+            return string.Empty;
+        }
+
         public Image? CargarMiniatura(string rutaLocal, int ancho = 110, int alto = 110)
         {
-            if (string.IsNullOrWhiteSpace(rutaLocal) || !File.Exists(rutaLocal))
+            if (string.IsNullOrWhiteSpace(rutaLocal))
             {
                 return null;
+            }
+
+            string rutaFinal = rutaLocal;
+            if (!File.Exists(rutaFinal))
+            {
+                string nombre = Path.GetFileName(rutaLocal);
+                string rutaBase = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Imagenes", nombre);
+                if (File.Exists(rutaBase))
+                {
+                    rutaFinal = rutaBase;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             try
             {
                 // Carga segura en memoria para jamás bloquear el archivo en disco
-                byte[] bytes = File.ReadAllBytes(rutaLocal);
+                byte[] bytes = File.ReadAllBytes(rutaFinal);
                 using var flujoMemoria = new MemoryStream(bytes);
                 using var imagenOriginal = Image.FromStream(flujoMemoria);
 

@@ -2735,11 +2735,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+      "projectUniqueName": "D:\\Desarrollo\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
       "projectName": "SheinScraperApp",
-      "projectPath": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+      "projectPath": "D:\\Desarrollo\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
       "packagesPath": "C:\\Users\\srbor\\.nuget\\packages\\",
-      "outputPath": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\obj\\",
+      "outputPath": "D:\\Desarrollo\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2753,8 +2753,17 @@
         "net9.0-windows"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2024.2.20\\FastReport .NET Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2024.2.20\\FastReport Avalonia Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2024.2.20\\FastReport WPF Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastCube .NET Trial\\Nuget": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastReport .NET Avalonia Pack Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastReport .NET Mono Pack Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastReport .NET WEB Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastReport .NET WPF Pack Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastReport .NET WinForms Pack Trial\\Nugets": {},
+        "C:\\Program Files (x86)\\Fast Reports\\.NET\\2025.1.14\\FastReport Business Graphics .NET Trial\\Nuget": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files (x86)\\Progress\\Telerik UI for WinForms R3 2022\\Bin60\\NuGet": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -2828,7 +2837,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.317/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

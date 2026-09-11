@@ -192,7 +192,9 @@ namespace SheinScraperApp.Formularios
                 MaxWidth = 120,
                 FormatString = "${0:N2}",
                 DecimalPlaces = 2,
-                ReadOnly = true,
+                Minimum = 0,
+                Maximum = 999999,
+                ReadOnly = false,
                 TextAlignment = ContentAlignment.MiddleRight
             };
             grillaProductos.Columns.Add(columnaPrecio);
@@ -297,6 +299,7 @@ namespace SheinScraperApp.Formularios
             // Eventos
             grillaProductos.CommandCellClick += GrillaProductos_CommandCellClick;
             grillaProductos.CellValueChanged += GrillaProductos_CellValueChanged;
+            grillaProductos.CellEndEdit += GrillaProductos_CellEndEdit;
             grillaProductos.RowFormatting += GrillaProductos_RowFormatting;
         }
 
@@ -420,7 +423,12 @@ namespace SheinScraperApp.Formularios
         {
             if (e.Row?.DataBoundItem is ProductoItem producto)
             {
-                if (e.Column.Name == "Cantidad" || e.Column.Name == "Comision" || e.Column.Name == "PrecioOriginal")
+                string colName = e.Column?.Name ?? string.Empty;
+                string fieldName = e.Column?.FieldName ?? string.Empty;
+
+                if (colName == "Cantidad" || fieldName == "Cantidad" ||
+                    colName == "PrecioOriginal" || fieldName == "PrecioOriginal" ||
+                    colName == "Comision" || fieldName == "Comision")
                 {
                     producto.Recalcular();
                     grillaProductos.TableElement.Update(GridUINotifyAction.DataChanged);
@@ -431,18 +439,54 @@ namespace SheinScraperApp.Formularios
             }
         }
 
+        private void GrillaProductos_CellEndEdit(object sender, GridViewCellEventArgs e)
+        {
+            if (e.Row?.DataBoundItem is ProductoItem producto)
+            {
+                producto.Recalcular();
+                grillaProductos.TableElement.Update(GridUINotifyAction.DataChanged);
+            }
+            ActualizarBarraEstadoResumen();
+        }
+
         private async Task CargarProductosDesdeBaseDatosAsync()
         {
             var registros = await _repositorioProductos.ObtenerTodosAsync();
             _listaProductos.Clear();
 
+            var productosParaActualizarRuta = new List<ProductoItem>();
+
             foreach (var producto in registros)
             {
-                if (!string.IsNullOrEmpty(producto.RutaImagenLocal) && File.Exists(producto.RutaImagenLocal))
+                // Resolver ruta de imagen dinámicamente si la carpeta del aplicativo fue movida a otro equipo/directorio
+                string rutaResuelta = _almacenamientoImagenes.ResolverRutaLocal(producto.RutaImagenLocal, _carpetaImagenes, producto.Sku);
+                if (!string.IsNullOrEmpty(rutaResuelta))
                 {
-                    producto.ImagenMiniatura = _almacenamientoImagenes.CargarMiniatura(producto.RutaImagenLocal, 110, 110);
+                    if (!rutaResuelta.Equals(producto.RutaImagenLocal, StringComparison.OrdinalIgnoreCase))
+                    {
+                        producto.RutaImagenLocal = rutaResuelta;
+                        productosParaActualizarRuta.Add(producto);
+                    }
+                    producto.ImagenMiniatura = _almacenamientoImagenes.CargarMiniatura(rutaResuelta, 110, 110);
                 }
+
                 _listaProductos.Add(producto);
+            }
+
+            // Sincronizar silenciosamente las nuevas rutas locales en la base de datos si cambiaron
+            if (productosParaActualizarRuta.Count > 0)
+            {
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        foreach (var p in productosParaActualizarRuta)
+                        {
+                            await _repositorioProductos.GuardarOActualizarAsync(p);
+                        }
+                    }
+                    catch { }
+                });
             }
 
             ActualizarBarraEstadoResumen();
@@ -626,26 +670,7 @@ namespace SheinScraperApp.Formularios
             {
                 etiquetaEstadoProgreso.Text = "Abriendo ventana para resolución manual de Captcha...";
 
-                new WebDriverManager.DriverManager().SetUpDriver(
-                    new WebDriverManager.DriverConfigs.Impl.ChromeConfig(),
-                    WebDriverManager.Helpers.VersionResolveStrategy.MatchingBrowser);
-
-                var servicioControlador = ChromeDriverService.CreateDefaultService();
-                servicioControlador.HideCommandPromptWindow = true;
-
-                string rutaPerfil = Path.Combine(Path.GetTempPath(), "SheinScraperChromeProfile");
-                Directory.CreateDirectory(rutaPerfil);
-
-                var opciones = new ChromeOptions();
-                opciones.AddArgument($"--user-data-dir={rutaPerfil}");
-                opciones.AddArgument("--profile-directory=Default");
-                opciones.AddArgument("--disable-gpu");
-                opciones.AddArgument("--disable-blink-features=AutomationControlled");
-                opciones.AddExcludedArgument("enable-automation");
-                opciones.AddArgument("--start-maximized");
-                opciones.AddArgument("--lang=es-ES,es");
-
-                navegadorVisible = new ChromeDriver(servicioControlador, opciones);
+                navegadorVisible = GestorNavegadorChrome.CrearNavegador(modoSinCabeza: false);
                 navegadorVisible.Navigate().GoToUrl(exCaptcha.UrlDondeOcurrio);
 
                 RadMessageBox.Show(
@@ -703,6 +728,8 @@ namespace SheinScraperApp.Formularios
 
         private async void BotonExportarPdf_Click(object sender, EventArgs e)
         {
+            grillaProductos.EndEdit();
+
             if (_listaProductos.Count == 0)
             {
                 RadMessageBox.Show(this, "No hay productos en la tabla para exportar la estimación en PDF.", "Tabla Vacía", MessageBoxButtons.OK, RadMessageIcon.Exclamation);

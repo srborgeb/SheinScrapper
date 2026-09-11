@@ -168,13 +168,33 @@ namespace SheinScraperApp.Servicios
                                     return contenedor.AlignMiddle();
                                 }
 
-                                // 1. Imagen incrustada ampliada
+                                // 1. Imagen incrustada ampliada (con resolución dinámica si la carpeta fue movida de equipo)
                                 var celdaImg = CeldaDatos(tabla.Cell(), alinearCentro: true);
-                                if (!string.IsNullOrWhiteSpace(item.RutaImagenLocal) && File.Exists(item.RutaImagenLocal))
+                                string? rutaImagenPdf = item.RutaImagenLocal;
+                                if (string.IsNullOrWhiteSpace(rutaImagenPdf) || !File.Exists(rutaImagenPdf))
+                                {
+                                    string nombreArchivo = Path.GetFileName(item.RutaImagenLocal ?? "");
+                                    string candidata = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Imagenes", nombreArchivo);
+                                    if (!string.IsNullOrWhiteSpace(nombreArchivo) && File.Exists(candidata))
+                                    {
+                                        rutaImagenPdf = candidata;
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(item.Sku))
+                                    {
+                                        string skuLimpio = string.Join("_", item.Sku.Split(Path.GetInvalidFileNameChars()));
+                                        string candidataSku = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Imagenes", $"{skuLimpio}.jpg");
+                                        if (File.Exists(candidataSku))
+                                        {
+                                            rutaImagenPdf = candidataSku;
+                                        }
+                                    }
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(rutaImagenPdf) && File.Exists(rutaImagenPdf))
                                 {
                                     try
                                     {
-                                        byte[] bytesImagen = File.ReadAllBytes(item.RutaImagenLocal);
+                                        byte[] bytesImagen = File.ReadAllBytes(rutaImagenPdf);
                                         celdaImg.MaxHeight(80).Image(bytesImagen).FitArea();
                                     }
                                     catch

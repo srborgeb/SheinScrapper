@@ -57,43 +57,7 @@ namespace SheinScraperApp.Servicios
                     Mensaje = "Iniciando motor de navegación web..."
                 });
 
-                new DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
-                var servicioControlador = ChromeDriverService.CreateDefaultService();
-                servicioControlador.SuppressInitialDiagnosticInformation = true;
-                servicioControlador.HideCommandPromptWindow = true;
-
-                string rutaPerfilChrome = Path.Combine(Path.GetTempPath(), "SheinScraperChromeProfile");
-                Directory.CreateDirectory(rutaPerfilChrome);
-
-                var opcionesNavegador = new ChromeOptions();
-                opcionesNavegador.AddArgument($"--user-data-dir={rutaPerfilChrome}");
-                opcionesNavegador.AddArgument("--profile-directory=Default");
-                opcionesNavegador.AddArgument("--disable-blink-features=AutomationControlled");
-                opcionesNavegador.AddExcludedArgument("enable-automation");
-                opcionesNavegador.AddArgument("--disable-infobars");
-                opcionesNavegador.AddArgument("--disable-notifications");
-
-                if (ModoSinCabeza)
-                {
-                    // Ejecutar en modo gráfico real posicionado fuera de la pantalla.
-                    // Esto evita la detección de bots (Akamai/WAF) al ser un Chrome 100% auténtico,
-                    // y es completamente invisible para el usuario sin ventanas que interfieran.
-                    opcionesNavegador.AddArgument("--window-position=-32000,-32000");
-                    opcionesNavegador.AddArgument("--window-size=1920,1080");
-                }
-                else
-                {
-                    opcionesNavegador.AddArgument("--start-maximized");
-                }
-
-                opcionesNavegador.AddArgument("--no-sandbox");
-                opcionesNavegador.AddArgument("--disable-dev-shm-usage");
-                opcionesNavegador.AddArgument("--disable-gpu");
-                opcionesNavegador.AddArgument("--lang=es-ES,es");
-
-                navegador = new ChromeDriver(servicioControlador, opcionesNavegador);
-                navegador.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);
-                navegador.Manage().Timeouts().ImplicitWait = TimeSpan.Zero;
+                navegador = GestorNavegadorChrome.CrearNavegador(ModoSinCabeza);
 
                 for (int i = 0; i < urls.Count; i++)
                 {
