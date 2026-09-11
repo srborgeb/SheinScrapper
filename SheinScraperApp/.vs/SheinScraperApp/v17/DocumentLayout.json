@@ -3,24 +3,76 @@
   "WorkspaceRootPath": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\sheinscraperapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
-      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\servicios\\servicioscrapershein.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\servicios\\servicioscrapershein.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\formularios\\formularioprincipalrad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\formularios\\formularioprincipalrad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\formularios\\formularioprincipalrad.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\formularios\\formularioprincipalrad.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\servicios\\servicioexportacionpdf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\servicios\\servicioexportacionpdf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\servicios\\iservicioscrapershein.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\servicios\\iservicioscrapershein.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\modelos\\productoitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\modelos\\productoitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\modelos\\excepcioncaptchashein.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\modelos\\excepcioncaptchashein.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\datos\\repositorios\\repositorioproductossqlite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\datos\\repositorios\\repositorioproductossqlite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\formularios\\formularioseleccioncliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\formularios\\formularioseleccioncliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\formularios\\formularioseleccioncliente.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\formularios\\formularioseleccioncliente.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\servicios\\servicioalmacenamientoimageneslocal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\servicios\\servicioalmacenamientoimageneslocal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\servicios\\iservicioalmacenamientoimagenes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\servicios\\iservicioalmacenamientoimagenes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\servicios\\iservicioexportacionpdf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\servicios\\iservicioexportacionpdf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\formularios\\formularioprincipalrad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\formularios\\formularioprincipalrad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\datos\\contextobasedatosapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\datos\\contextobasedatosapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\sheinscraperapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\sheinscraperapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|d:\\desarrollo\\codigos\\c#\\sheinscrapper\\sheinscraperapp\\sheinscraperapp\\datos\\repositorios\\irepositorioproductos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26BC9C7A-BD25-48D9-AD48-06A318D27DAF}|SheinScraperApp\\SheinScraperApp.csproj|solutionrelative:sheinscraperapp\\datos\\repositorios\\irepositorioproductos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,34 +82,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 8,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Program.cs",
-              "RelativeDocumentMoniker": "SheinScraperApp\\Program.cs",
-              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Program.cs",
-              "RelativeToolTip": "SheinScraperApp\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-13T15:40:56.463Z",
-              "IsPinned": true
+              "$type": "Bookmark",
+              "Name": "ST:4:0:{3a0279d4-1a5c-4f7e-97c2-ec06915e7142}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Form1.Designer.cs",
-              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.Designer.cs",
-              "RelativeDocumentMoniker": "SheinScraperApp\\Form1.Designer.cs",
-              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.Designer.cs",
-              "RelativeToolTip": "SheinScraperApp\\Form1.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T12:18:56.659Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:5:0:{3a0279d4-1a5c-4f7e-97c2-ec06915e7142}"
             },
             {
               "$type": "Bookmark",
@@ -68,40 +101,248 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{3a0279d4-1a5c-4f7e-97c2-ec06915e7142}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:6:0:{3a0279d4-1a5c-4f7e-97c2-ec06915e7142}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:7:0:{3a0279d4-1a5c-4f7e-97c2-ec06915e7142}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Form1.resx",
-              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.resx",
-              "RelativeDocumentMoniker": "SheinScraperApp\\Form1.resx",
-              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.resx",
-              "RelativeToolTip": "SheinScraperApp\\Form1.resx",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2025-08-13T15:41:17.865Z",
+              "Title": "FormularioPrincipalRad.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs",
+              "RelativeToolTip": "SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAcwBkDAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:45:45.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ServicioScraperShein.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\ServicioScraperShein.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Servicios\\ServicioScraperShein.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\ServicioScraperShein.cs",
+              "RelativeToolTip": "SheinScraperApp\\Servicios\\ServicioScraperShein.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAwwG4AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T23:17:55.657Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ServicioExportacionPdf.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\ServicioExportacionPdf.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Servicios\\ServicioExportacionPdf.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\ServicioExportacionPdf.cs",
+              "RelativeToolTip": "SheinScraperApp\\Servicios\\ServicioExportacionPdf.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:57:46.321Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IServicioScraperShein.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\IServicioScraperShein.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Servicios\\IServicioScraperShein.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\IServicioScraperShein.cs",
+              "RelativeToolTip": "SheinScraperApp\\Servicios\\IServicioScraperShein.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-11T00:05:30.792Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FormularioPrincipalRad.Designer.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioPrincipalRad.Designer.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Formularios\\FormularioPrincipalRad.Designer.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioPrincipalRad.Designer.cs",
+              "RelativeToolTip": "SheinScraperApp\\Formularios\\FormularioPrincipalRad.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:45:45Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Form1.cs [Dise\u00F1o]",
-              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs",
-              "RelativeDocumentMoniker": "SheinScraperApp\\Form1.cs",
-              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs [Dise\u00F1o]",
-              "RelativeToolTip": "SheinScraperApp\\Form1.cs [Dise\u00F1o]",
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Program.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Program.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Program.cs",
+              "RelativeToolTip": "SheinScraperApp\\Program.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-24T14:41:51.463Z",
+              "WhenOpened": "2026-09-10T22:45:45.437Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ExcepcionCaptchaShein.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Modelos\\ExcepcionCaptchaShein.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Modelos\\ExcepcionCaptchaShein.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Modelos\\ExcepcionCaptchaShein.cs",
+              "RelativeToolTip": "SheinScraperApp\\Modelos\\ExcepcionCaptchaShein.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-11T00:05:30.024Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FormularioSeleccionCliente.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioSeleccionCliente.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Formularios\\FormularioSeleccionCliente.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioSeleccionCliente.cs",
+              "RelativeToolTip": "SheinScraperApp\\Formularios\\FormularioSeleccionCliente.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T23:29:27.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "FormularioSeleccionCliente.Designer.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioSeleccionCliente.Designer.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Formularios\\FormularioSeleccionCliente.Designer.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioSeleccionCliente.Designer.cs",
+              "RelativeToolTip": "SheinScraperApp\\Formularios\\FormularioSeleccionCliente.Designer.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAGoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T23:29:27.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductoItem.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Modelos\\ProductoItem.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Modelos\\ProductoItem.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Modelos\\ProductoItem.cs",
+              "RelativeToolTip": "SheinScraperApp\\Modelos\\ProductoItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:45:45.318Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RepositorioProductosSqlite.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Datos\\Repositorios\\RepositorioProductosSqlite.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Datos\\Repositorios\\RepositorioProductosSqlite.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Datos\\Repositorios\\RepositorioProductosSqlite.cs",
+              "RelativeToolTip": "SheinScraperApp\\Datos\\Repositorios\\RepositorioProductosSqlite.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:21:47.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ServicioAlmacenamientoImagenesLocal.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\ServicioAlmacenamientoImagenesLocal.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Servicios\\ServicioAlmacenamientoImagenesLocal.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\ServicioAlmacenamientoImagenesLocal.cs",
+              "RelativeToolTip": "SheinScraperApp\\Servicios\\ServicioAlmacenamientoImagenesLocal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T23:17:55.458Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IServicioAlmacenamientoImagenes.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\IServicioAlmacenamientoImagenes.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Servicios\\IServicioAlmacenamientoImagenes.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\IServicioAlmacenamientoImagenes.cs",
+              "RelativeToolTip": "SheinScraperApp\\Servicios\\IServicioAlmacenamientoImagenes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T23:17:55.102Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IServicioExportacionPdf.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\IServicioExportacionPdf.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Servicios\\IServicioExportacionPdf.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Servicios\\IServicioExportacionPdf.cs",
+              "RelativeToolTip": "SheinScraperApp\\Servicios\\IServicioExportacionPdf.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:57:46.03Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SheinScraperApp",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+              "RelativeDocumentMoniker": "SheinScraperApp\\SheinScraperApp.csproj",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\SheinScraperApp.csproj",
+              "RelativeToolTip": "SheinScraperApp\\SheinScraperApp.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-09-10T22:40:42.835Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ContextoBaseDatosApp.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Datos\\ContextoBaseDatosApp.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Datos\\ContextoBaseDatosApp.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Datos\\ContextoBaseDatosApp.cs",
+              "RelativeToolTip": "SheinScraperApp\\Datos\\ContextoBaseDatosApp.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:22:55.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "FormularioPrincipalRad.cs [Dise\u00F1o]",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs [Dise\u00F1o]",
+              "RelativeToolTip": "SheinScraperApp\\Formularios\\FormularioPrincipalRad.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-10T22:22:07.459Z",
               "EditorCaption": " [Dise\u00F1o]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs",
-              "RelativeDocumentMoniker": "SheinScraperApp\\Form1.cs",
-              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Form1.cs",
-              "RelativeToolTip": "SheinScraperApp\\Form1.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAawGEAAAAMAAAAAAAAAA==",
+              "DocumentIndex": 17,
+              "Title": "IRepositorioProductos.cs",
+              "DocumentMoniker": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Datos\\Repositorios\\IRepositorioProductos.cs",
+              "RelativeDocumentMoniker": "SheinScraperApp\\Datos\\Repositorios\\IRepositorioProductos.cs",
+              "ToolTip": "D:\\Desarrollo\\Codigos\\C#\\SheinScrapper\\SheinScraperApp\\SheinScraperApp\\Datos\\Repositorios\\IRepositorioProductos.cs",
+              "RelativeToolTip": "SheinScraperApp\\Datos\\Repositorios\\IRepositorioProductos.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-24T13:39:57.132Z",
+              "WhenOpened": "2026-09-10T22:21:41.637Z",
               "EditorCaption": ""
             }
           ]

@@ -13,4 +13,10 @@
     <SourceRoot Include="C:\Users\srbor\.nuget\packages\" />
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\9.0.2\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\9.0.2\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgUI_for_WinForms_AllControls_Net60 Condition=" '$(PkgUI_for_WinForms_AllControls_Net60)' == '' ">C:\Users\srbor\.nuget\packages\ui.for.winforms.allcontrols.net60\2022.3.913</PkgUI_for_WinForms_AllControls_Net60>
+  </PropertyGroup>
 </Project>

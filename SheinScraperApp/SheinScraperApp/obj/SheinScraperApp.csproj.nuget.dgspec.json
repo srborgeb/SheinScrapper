@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files (x86)\\Progress\\Telerik UI for WinForms R3 2022\\Bin60\\NuGet": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -51,21 +52,29 @@
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
           "dependencies": {
-            "DotNetSeleniumExtras.WaitHelpers": {
+            "ClosedXML": {
               "target": "Package",
-              "version": "[3.11.0, )"
+              "version": "[0.105.1, )"
             },
-            "EPPlus": {
+            "FontAwesome.Sharp": {
               "target": "Package",
-              "version": "[4.5.3.3, )"
+              "version": "[6.6.0, )"
             },
-            "Selenium.Firefox.WebDriver": {
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[0.27.0, )"
+              "version": "[9.0.2, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2024.12.1, )"
             },
             "Selenium.WebDriver": {
               "target": "Package",
               "version": "[4.34.0, )"
+            },
+            "UI.for.WinForms.AllControls.Net60": {
+              "target": "Package",
+              "version": "[2022.3.913, )"
             },
             "WebDriverManager": {
               "target": "Package",
